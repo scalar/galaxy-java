@@ -4,20 +4,20 @@
 // endpoint.
 // Run it from this repo with `./gradlew test`. The generator also runs this file
 // against a mock server and reads the JSON report produced via SCALAR_SMOKE_REPORT.
-import com.scalar.client.GalaxyClient;
-import com.scalar.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.models.authentication.AuthenticationCreateTokenParams;
-import com.scalar.models.authentication.AuthenticationCreateUserParams;
-import com.scalar.models.authentication.Credentials;
-import com.scalar.models.celestialbodies.CelestialBody;
-import com.scalar.models.celestialbodies.CelestialBodyCreateParams;
-import com.scalar.models.planets.Planet;
-import com.scalar.models.planets.PlanetCreateParams;
-import com.scalar.models.planets.PlanetDeleteParams;
-import com.scalar.models.planets.PlanetDelteImageParams;
-import com.scalar.models.planets.PlanetListAllDataParams;
-import com.scalar.models.planets.PlanetRetrieveParams;
-import com.scalar.models.planets.PlanetUpdateParams;
+import com.scalar.galaxy.client.GalaxyClient;
+import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
+import com.scalar.galaxy.models.authentication.AuthenticationCreateTokenParams;
+import com.scalar.galaxy.models.authentication.AuthenticationCreateUserParams;
+import com.scalar.galaxy.models.authentication.Credentials;
+import com.scalar.galaxy.models.celestialbodies.CelestialBody;
+import com.scalar.galaxy.models.celestialbodies.CelestialBodyCreateParams;
+import com.scalar.galaxy.models.planets.Planet;
+import com.scalar.galaxy.models.planets.PlanetCreateParams;
+import com.scalar.galaxy.models.planets.PlanetDeleteParams;
+import com.scalar.galaxy.models.planets.PlanetDelteImageParams;
+import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.models.planets.PlanetRetrieveParams;
+import com.scalar.galaxy.models.planets.PlanetUpdateParams;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;

@@ -37,16 +37,16 @@ The full API of this library can be found in [api.md](./api.md).
 Add the dependency to your Gradle build:
 
 ```kotlin
-implementation("com.scalar:galaxy-java:0.1.0") // x-release-please-version
+implementation("com.scalar.galaxy:galaxy-java:0.2.0") // x-release-please-version
 ```
 
 Or declare it in your Maven `pom.xml`:
 
 ```xml
 <dependency>
-  <groupId>com.scalar</groupId>
+  <groupId>com.scalar.galaxy</groupId>
   <artifactId>galaxy-java</artifactId>
-  <version>0.1.0</version> <!-- x-release-please-version -->
+  <version>0.2.0</version> <!-- x-release-please-version -->
 </dependency>
 ```
 
@@ -61,9 +61,9 @@ Or build the SDK from source, with JDK 21 installed:
 ## Usage
 
 ```java
-import com.scalar.client.GalaxyClient;
-import com.scalar.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.client.GalaxyClient;
+import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
+import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
 
 GalaxyClient client =
     GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -86,9 +86,9 @@ See the [API reference](./api.md) for every available operation.
 Use `GalaxyOkHttpClientAsync.builder()` or call `client.async()` when you want `CompletableFuture` services. Call `sync()` on the async client to switch back; both clients share one connection and thread pool.
 
 ```java
-import com.scalar.client.GalaxyClientAsync;
-import com.scalar.client.okhttp.GalaxyOkHttpClientAsync;
-import com.scalar.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.client.GalaxyClientAsync;
+import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClientAsync;
+import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
 
 GalaxyClientAsync client =
     GalaxyOkHttpClientAsync.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -249,7 +249,7 @@ Declared schemes:
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```java
-import com.scalar.errors.GalaxyServiceException;
+import com.scalar.galaxy.errors.GalaxyServiceException;
 
 try {
   PlanetListAllDataParams params =
@@ -270,8 +270,8 @@ Documented error statuses: `400`, `401`, `403`, `404`, `409`, `422`, `429`.
 Configure the generated client by setting any of these options when you create it.
 
 ```java
-import com.scalar.client.GalaxyClient;
-import com.scalar.client.okhttp.GalaxyOkHttpClient;
+import com.scalar.galaxy.client.GalaxyClient;
+import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import java.time.Duration;
 
 GalaxyClient client =
