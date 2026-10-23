@@ -1,4 +1,4 @@
-rootProject.name = "java-root"
+rootProject.name = "galaxy-java-root"
 
 val projectNames =
     rootDir
@@ -8,7 +8,7 @@ val projectNames =
         .filter { file ->
             file.isDirectory &&
                 file.name != "buildSrc" &&
-                file.name.startsWith("java") &&
+                file.name.startsWith("galaxy") &&
                 file.listFiles()?.asSequence().orEmpty().any { it.name == "build.gradle.kts" }
         }
         .map { it.name }

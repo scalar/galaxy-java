@@ -1,5 +1,5 @@
 plugins {
-    id("java.kotlin")
+    id("galaxy.kotlin")
 }
 
 repositories {
@@ -16,7 +16,7 @@ val proguardTool: Configuration by configurations.creating
 val r8Tool: Configuration by configurations.creating
 
 dependencies {
-    testImplementation(project(":java"))
+    testImplementation(project(":galaxy-java"))
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
 
@@ -30,7 +30,7 @@ val mainClassName = "com.scalar.galaxy.proguard.ProGuardCompatibilityTest"
 val keepRules =
     files(
         "test.pro",
-        "../java-core/src/main/resources/META-INF/proguard/java-core.pro",
+        "../galaxy-java-core/src/main/resources/META-INF/proguard/galaxy-java-core.pro",
     )
 val shrinkInput = layout.buildDirectory.file("libs/${project.name}-shrink-input.jar").get().asFile
 val proguardOutput = layout.buildDirectory.file("libs/${project.name}-proguard.jar").get().asFile

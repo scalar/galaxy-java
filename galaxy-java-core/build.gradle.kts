@@ -1,6 +1,6 @@
 plugins {
-    id("java.kotlin")
-    id("java.publish")
+    id("galaxy.kotlin")
+    id("galaxy.publish")
 }
 
 configurations.all {

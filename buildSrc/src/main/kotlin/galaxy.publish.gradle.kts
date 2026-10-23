@@ -29,24 +29,24 @@ mavenPublishing {
         description.set(
             "The Scalar Galaxy is an example OpenAPI document to test OpenAPI tools and libraries. It's a fictional universe with fictional planets and fictional data."
         )
-        url.set("https://github.com/scalar/galax-java")
+        url.set("https://github.com/scalar/galaxy-java")
         licenses {
             license {
                 name.set("Apache-2.0")
-                url.set("https://github.com/scalar/galax-java/blob/HEAD/LICENSE")
+                url.set("https://github.com/scalar/galaxy-java/blob/HEAD/LICENSE")
             }
         }
         developers {
             developer {
                 id.set("scalarGalaxy")
                 name.set("Scalar Galaxy")
-                url.set("https://github.com/scalar/galax-java")
+                url.set("https://github.com/scalar/galaxy-java")
             }
         }
         scm {
-            url.set("https://github.com/scalar/galax-java")
-            connection.set("scm:git:https://github.com/scalar/galax-java.git")
-            developerConnection.set("scm:git:ssh://git@github.com/scalar/galax-java.git")
+            url.set("https://github.com/scalar/galaxy-java")
+            connection.set("scm:git:https://github.com/scalar/galaxy-java.git")
+            developerConnection.set("scm:git:ssh://git@github.com/scalar/galaxy-java.git")
         }
     }
 }

@@ -12,7 +12,7 @@ Generated Java client for Scalar Galaxy API, published as `com.scalar.galaxy`. U
 Add the dependency to your Gradle build:
 
 ```kotlin
-implementation("com.scalar.galaxy:java:0.1.0") // x-release-please-version
+implementation("com.scalar.galaxy:galaxy-java:0.1.0") // x-release-please-version
 ```
 
 Or declare it in your Maven `pom.xml`:
@@ -20,7 +20,7 @@ Or declare it in your Maven `pom.xml`:
 ```xml
 <dependency>
   <groupId>com.scalar.galaxy</groupId>
-  <artifactId>java</artifactId>
+  <artifactId>galaxy-java</artifactId>
   <version>0.1.0</version> <!-- x-release-please-version -->
 </dependency>
 ```
@@ -28,7 +28,7 @@ Or declare it in your Maven `pom.xml`:
 Or build the SDK from source, with JDK 21 installed:
 
 ```sh
-./gradlew :java:build
+./gradlew :galaxy-java:build
 ```
 
 ## Client setup and authentication

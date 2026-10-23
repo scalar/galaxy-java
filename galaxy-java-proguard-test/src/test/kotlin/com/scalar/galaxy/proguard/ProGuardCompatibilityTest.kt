@@ -41,7 +41,9 @@ internal class ProGuardCompatibilityTest {
 
     @Test
     fun keepRulesAreOnTheClasspath() {
-        assertNotNull(javaClass.classLoader.getResourceAsStream("META-INF/proguard/java-core.pro"))
+        assertNotNull(
+            javaClass.classLoader.getResourceAsStream("META-INF/proguard/galaxy-java-core.pro")
+        )
     }
 
     @Test

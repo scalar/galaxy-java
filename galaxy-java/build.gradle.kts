@@ -1,10 +1,10 @@
 plugins {
-    id("java.kotlin")
-    id("java.publish")
+    id("galaxy.kotlin")
+    id("galaxy.publish")
 }
 
 dependencies {
-    api(project(":java-client-okhttp"))
+    api(project(":galaxy-java-client-okhttp"))
 
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
