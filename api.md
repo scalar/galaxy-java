@@ -38,20 +38,19 @@ It's easy to say you know them all, but do you really? Retrieve all the planets 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`PlanetListAllDataParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListAllDataParams.kt) |
-| Response | [`PlanetListAllDataResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListAllDataResponse.kt) |
+| Request | [`PlanetListParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListParams.kt) |
+| Response | [`PlanetListResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListResponse.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.models.planets.PlanetListParams;
 
 GalaxyClient client =
     GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-PlanetListAllDataParams params =
-    PlanetListAllDataParams.builder().limit(10L).offset(0L).build();
-var planet = client.planets().listAllData(params);
+PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
+var planet = client.planets().list(params);
 
 System.out.println(planet);
 ```
@@ -158,19 +157,19 @@ Got a crazy good photo of a planet? Share it with the world!
 
 | Direction | Type |
 | --- | --- |
-| Request | [`PlanetDelteImageParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetDelteImageParams.kt) |
-| Response | [`PlanetDelteImageResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetDelteImageResponse.kt) |
+| Request | [`PlanetUploadImageParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetUploadImageParams.kt) |
+| Response | [`PlanetUploadImageResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetUploadImageResponse.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.galaxy.models.planets.PlanetDelteImageParams;
+import com.scalar.galaxy.models.planets.PlanetUploadImageParams;
 
 GalaxyClient client =
     GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-PlanetDelteImageParams params = PlanetDelteImageParams.builder().planetId(1L).build();
-var planet = client.planets().delteImage(params);
+PlanetUploadImageParams params = PlanetUploadImageParams.builder().planetId(1L).build();
+var planet = client.planets().uploadImage(params);
 
 System.out.println(planet);
 ```

@@ -21,12 +21,12 @@ import com.scalar.galaxy.core.prepareAsync
 import com.scalar.galaxy.models.planets.Planet
 import com.scalar.galaxy.models.planets.PlanetCreateParams
 import com.scalar.galaxy.models.planets.PlanetDeleteParams
-import com.scalar.galaxy.models.planets.PlanetDelteImageParams
-import com.scalar.galaxy.models.planets.PlanetDelteImageResponse
-import com.scalar.galaxy.models.planets.PlanetListAllDataParams
-import com.scalar.galaxy.models.planets.PlanetListAllDataResponse
+import com.scalar.galaxy.models.planets.PlanetListParams
+import com.scalar.galaxy.models.planets.PlanetListResponse
 import com.scalar.galaxy.models.planets.PlanetRetrieveParams
 import com.scalar.galaxy.models.planets.PlanetUpdateParams
+import com.scalar.galaxy.models.planets.PlanetUploadImageParams
+import com.scalar.galaxy.models.planets.PlanetUploadImageResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
@@ -65,6 +65,13 @@ class PlanetServiceAsyncImpl internal constructor(private val clientOptions: Cli
         // put /planets/{planetId}
         withRawResponse().update(params, requestOptions).thenApply { it.parse() }
 
+    override fun list(
+        params: PlanetListParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<PlanetListResponse> =
+        // get /planets
+        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+
     override fun delete(
         params: PlanetDeleteParams,
         requestOptions: RequestOptions,
@@ -72,19 +79,12 @@ class PlanetServiceAsyncImpl internal constructor(private val clientOptions: Cli
         // delete /planets/{planetId}
         withRawResponse().delete(params, requestOptions).thenAccept {}
 
-    override fun delteImage(
-        params: PlanetDelteImageParams,
+    override fun uploadImage(
+        params: PlanetUploadImageParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<PlanetDelteImageResponse> =
+    ): CompletableFuture<PlanetUploadImageResponse> =
         // post /planets/{planetId}/image
-        withRawResponse().delteImage(params, requestOptions).thenApply { it.parse() }
-
-    override fun listAllData(
-        params: PlanetListAllDataParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<PlanetListAllDataResponse> =
-        // get /planets
-        withRawResponse().listAllData(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().uploadImage(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PlanetServiceAsync.WithRawResponse {
@@ -194,6 +194,36 @@ class PlanetServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 }
         }
 
+        private val listHandler: Handler<PlanetListResponse> =
+            jsonHandler<PlanetListResponse>(clientOptions.jsonMapper)
+
+        override fun list(
+            params: PlanetListParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<PlanetListResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("planets")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { listHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
         private val deleteHandler: Handler<Void?> = emptyHandler()
 
         override fun delete(
@@ -221,13 +251,13 @@ class PlanetServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 }
         }
 
-        private val delteImageHandler: Handler<PlanetDelteImageResponse> =
-            jsonHandler<PlanetDelteImageResponse>(clientOptions.jsonMapper)
+        private val uploadImageHandler: Handler<PlanetUploadImageResponse> =
+            jsonHandler<PlanetUploadImageResponse>(clientOptions.jsonMapper)
 
-        override fun delteImage(
-            params: PlanetDelteImageParams,
+        override fun uploadImage(
+            params: PlanetUploadImageParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<PlanetDelteImageResponse>> {
+        ): CompletableFuture<HttpResponseFor<PlanetUploadImageResponse>> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("planetId", params.planetId().getOrNull())
@@ -245,37 +275,7 @@ class PlanetServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { delteImageHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                    }
-                }
-        }
-
-        private val listAllDataHandler: Handler<PlanetListAllDataResponse> =
-            jsonHandler<PlanetListAllDataResponse>(clientOptions.jsonMapper)
-
-        override fun listAllData(
-            params: PlanetListAllDataParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<PlanetListAllDataResponse>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("planets")
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    errorHandler.handle(response).parseable {
-                        response
-                            .use { listAllDataHandler.handle(it) }
+                            .use { uploadImageHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

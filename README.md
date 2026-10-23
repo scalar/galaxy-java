@@ -63,14 +63,13 @@ Or build the SDK from source, with JDK 21 installed:
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.models.planets.PlanetListParams;
 
 GalaxyClient client =
     GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-PlanetListAllDataParams params =
-    PlanetListAllDataParams.builder().limit(10L).offset(0L).build();
-var planet = client.planets().listAllData(params);
+PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
+var planet = client.planets().list(params);
 
 System.out.println(planet);
 ```
@@ -88,14 +87,13 @@ Use `GalaxyOkHttpClientAsync.builder()` or call `client.async()` when you want `
 ```java
 import com.scalar.galaxy.client.GalaxyClientAsync;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClientAsync;
-import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.models.planets.PlanetListParams;
 
 GalaxyClientAsync client =
     GalaxyOkHttpClientAsync.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-PlanetListAllDataParams params =
-    PlanetListAllDataParams.builder().limit(10L).offset(0L).build();
-client.planets().listAllData(params).thenAccept(planet -> System.out.println(planet));
+PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
+client.planets().list(params).thenAccept(planet -> System.out.println(planet));
 ```
 
 <br />
@@ -252,9 +250,8 @@ Non-success responses throw generated API errors. Error objects expose status, h
 import com.scalar.galaxy.errors.GalaxyServiceException;
 
 try {
-  PlanetListAllDataParams params =
-      PlanetListAllDataParams.builder().limit(10L).offset(0L).build();
-  var planet = client.planets().listAllData(params);
+  PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
+  var planet = client.planets().list(params);
 } catch (GalaxyServiceException err) {
   System.out.println(err.statusCode() + " " + err.body());
   throw err;
