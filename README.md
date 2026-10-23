@@ -37,7 +37,7 @@ The full API of this library can be found in [api.md](./api.md).
 Add the dependency to your Gradle build:
 
 ```kotlin
-implementation("com.scalar.galaxy:java:0.1.0") // x-release-please-version
+implementation("com.scalar.galaxy:galaxy-java:0.1.0") // x-release-please-version
 ```
 
 Or declare it in your Maven `pom.xml`:
@@ -45,7 +45,7 @@ Or declare it in your Maven `pom.xml`:
 ```xml
 <dependency>
   <groupId>com.scalar.galaxy</groupId>
-  <artifactId>java</artifactId>
+  <artifactId>galaxy-java</artifactId>
   <version>0.1.0</version> <!-- x-release-please-version -->
 </dependency>
 ```
@@ -53,7 +53,7 @@ Or declare it in your Maven `pom.xml`:
 Or build the SDK from source, with JDK 21 installed:
 
 ```sh
-./gradlew :java:build
+./gradlew :galaxy-java:build
 ```
 
 <br />
@@ -164,8 +164,8 @@ the generated OkHttp builders are one implementation of that interface, not a re
 ## ProGuard and R8
 
 The SDK deserializes with reflection, so shrinkers need to be told which members to keep. The
-`java-core` module publishes those keep rules at
-`java-core/src/main/resources/META-INF/proguard/java-core.pro`, and ProGuard and R8 pick them up
+`galaxy-java-core` module publishes those keep rules at
+`galaxy-java-core/src/main/resources/META-INF/proguard/galaxy-java-core.pro`, and ProGuard and R8 pick them up
 from the artifact automatically. Copy them into your own configuration only if your build does not read
 rules published by dependencies.
 
@@ -173,7 +173,7 @@ Note that those rules keep the whole generated SDK package, so a minified build 
 the generated classes. That is deliberate: a narrower rule set drops the annotations the SDK uses to omit unset
 properties, and a shrunk build then fails at runtime on the first optional property a caller leaves out.
 
-The `java-proguard-test` module checks those rules hold: `./gradlew testProGuard testR8` shrinks the SDK
+The `galaxy-java-proguard-test` module checks those rules hold: `./gradlew testProGuard testR8` shrinks the SDK
 with each shrinker under exactly the published rules and runs the compatibility test out of the shrunk jar.
 
 <br />

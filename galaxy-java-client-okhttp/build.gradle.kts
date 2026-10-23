@@ -1,10 +1,10 @@
 plugins {
-    id("java.kotlin")
-    id("java.publish")
+    id("galaxy.kotlin")
+    id("galaxy.publish")
 }
 
 dependencies {
-    api(project(":java-core"))
+    api(project(":galaxy-java-core"))
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 

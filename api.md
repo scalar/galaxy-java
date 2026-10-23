@@ -38,8 +38,8 @@ It's easy to say you know them all, but do you really? Retrieve all the planets 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`PlanetListAllDataParams`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListAllDataParams.kt) |
-| Response | [`PlanetListAllDataResponse`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListAllDataResponse.kt) |
+| Request | [`PlanetListAllDataParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListAllDataParams.kt) |
+| Response | [`PlanetListAllDataResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListAllDataResponse.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
@@ -62,8 +62,8 @@ Time to play god and create a new planet. What do you think? Ah, don't think too
 
 | Direction | Type |
 | --- | --- |
-| Request | [`PlanetCreateParams`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetCreateParams.kt) |
-| Response | [`Planet`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/Planet.kt) |
+| Request | [`PlanetCreateParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetCreateParams.kt) |
+| Response | [`Planet`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/Planet.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
@@ -87,8 +87,8 @@ You'll better learn a little bit more about the planets. It might come in handy 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`PlanetRetrieveParams`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetRetrieveParams.kt) |
-| Response | [`Planet`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/Planet.kt) |
+| Request | [`PlanetRetrieveParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetRetrieveParams.kt) |
+| Response | [`Planet`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/Planet.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
@@ -110,8 +110,8 @@ Sometimes you make mistakes, that's fine. No worries, you can update all planets
 
 | Direction | Type |
 | --- | --- |
-| Request | [`PlanetUpdateParams`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetUpdateParams.kt) |
-| Response | [`Planet`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/Planet.kt) |
+| Request | [`PlanetUpdateParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetUpdateParams.kt) |
+| Response | [`Planet`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/Planet.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
@@ -138,7 +138,7 @@ This endpoint was used to delete planets. Unfortunately, that caused a lot of tr
 
 | Direction | Type |
 | --- | --- |
-| Request | [`PlanetDeleteParams`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetDeleteParams.kt) |
+| Request | [`PlanetDeleteParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetDeleteParams.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
@@ -158,8 +158,8 @@ Got a crazy good photo of a planet? Share it with the world!
 
 | Direction | Type |
 | --- | --- |
-| Request | [`PlanetDelteImageParams`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetDelteImageParams.kt) |
-| Response | [`PlanetDelteImageResponse`](./java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetDelteImageResponse.kt) |
+| Request | [`PlanetDelteImageParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetDelteImageParams.kt) |
+| Response | [`PlanetDelteImageResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetDelteImageResponse.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
@@ -185,8 +185,8 @@ Stars, moons, comets, the occasional rogue asteroid — if it glows or drifts th
 
 | Direction | Type |
 | --- | --- |
-| Request | [`CelestialBodyCreateParams`](./java-core/src/main/kotlin/com/scalar/galaxy/models/celestialbodies/CelestialBodyCreateParams.kt) |
-| Response | [`CelestialBody`](./java-core/src/main/kotlin/com/scalar/galaxy/models/celestialbodies/CelestialBody.kt) |
+| Request | [`CelestialBodyCreateParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/celestialbodies/CelestialBodyCreateParams.kt) |
+| Response | [`CelestialBody`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/celestialbodies/CelestialBody.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
@@ -217,8 +217,8 @@ Time to create a user account, eh?
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AuthenticationCreateUserParams`](./java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/AuthenticationCreateUserParams.kt) |
-| Response | [`User`](./java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/User.kt) |
+| Request | [`AuthenticationCreateUserParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/AuthenticationCreateUserParams.kt) |
+| Response | [`User`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/User.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
@@ -245,8 +245,8 @@ Yeah, this is the boring security stuff. Just get your super secret token and mo
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AuthenticationCreateTokenParams`](./java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/AuthenticationCreateTokenParams.kt) |
-| Response | [`AuthenticationCreateTokenResponse`](./java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/AuthenticationCreateTokenResponse.kt) |
+| Request | [`AuthenticationCreateTokenParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/AuthenticationCreateTokenParams.kt) |
+| Response | [`AuthenticationCreateTokenResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/AuthenticationCreateTokenResponse.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
@@ -273,8 +273,8 @@ Find yourself they say. That's what you can do here.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AuthenticationListMeParams`](./java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/AuthenticationListMeParams.kt) |
-| Response | [`User`](./java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/User.kt) |
+| Request | [`AuthenticationListMeParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/AuthenticationListMeParams.kt) |
+| Response | [`User`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/authentication/User.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
