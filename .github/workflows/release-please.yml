@@ -129,10 +129,10 @@ jobs:
       - run: ./gradlew build
       - name: Publish to Maven Central
         run: |
-          GROUP_PATH="$(echo 'com.scalar' | tr '.' '/')"
+          GROUP_PATH="$(echo 'com.scalar.galaxy' | tr '.' '/')"
           VERSION="$(sed -n 's/^[[:space:]]*version = "\(.*\)"$/\1/p' build.gradle.kts | head -n1)"
-          if curl -sf -A "scalar-sdk-release" -o /dev/null "https://repo1.maven.org/maven2/${GROUP_PATH}/galaxy-java/${VERSION}/galaxy-java-${VERSION}.pom"; then
-            echo "com.scalar:galaxy-java:${VERSION} already on Maven Central, skipping"
+          if curl -sf -A "scalar-sdk-release" -o /dev/null "https://repo1.maven.org/maven2/${GROUP_PATH}/java/${VERSION}/java-${VERSION}.pom"; then
+            echo "com.scalar.galaxy:java:${VERSION} already on Maven Central, skipping"
           else
             ./gradlew publishToMavenCentral --no-configuration-cache
           fi
