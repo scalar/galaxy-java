@@ -23,7 +23,7 @@ import kotlin.io.path.name
 import kotlin.jvm.optionals.getOrNull
 
 /** Got a crazy good photo of a planet? Share it with the world! */
-class PlanetDelteImageParams
+class PlanetUploadImageParams
 private constructor(
     private val planetId: Long?,
     private val body: Body,
@@ -60,13 +60,13 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): PlanetDelteImageParams = builder().build()
+        @JvmStatic fun none(): PlanetUploadImageParams = builder().build()
 
-        /** Returns a mutable builder for constructing an instance of [PlanetDelteImageParams]. */
+        /** Returns a mutable builder for constructing an instance of [PlanetUploadImageParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [PlanetDelteImageParams]. */
+    /** A builder for [PlanetUploadImageParams]. */
     class Builder internal constructor() {
 
         private var planetId: Long? = null
@@ -75,11 +75,11 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(planetDelteImageParams: PlanetDelteImageParams) = apply {
-            planetId = planetDelteImageParams.planetId
-            body = planetDelteImageParams.body.toBuilder()
-            additionalHeaders = planetDelteImageParams.additionalHeaders.toBuilder()
-            additionalQueryParams = planetDelteImageParams.additionalQueryParams.toBuilder()
+        internal fun from(planetUploadImageParams: PlanetUploadImageParams) = apply {
+            planetId = planetUploadImageParams.planetId
+            body = planetUploadImageParams.body.toBuilder()
+            additionalHeaders = planetUploadImageParams.additionalHeaders.toBuilder()
+            additionalQueryParams = planetUploadImageParams.additionalQueryParams.toBuilder()
         }
 
         fun planetId(planetId: Long?) = apply { this.planetId = planetId }
@@ -239,12 +239,12 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [PlanetDelteImageParams].
+         * Returns an immutable instance of [PlanetUploadImageParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): PlanetDelteImageParams =
-            PlanetDelteImageParams(
+        fun build(): PlanetUploadImageParams =
+            PlanetUploadImageParams(
                 planetId,
                 body.build(),
                 additionalHeaders.build(),
@@ -419,7 +419,7 @@ private constructor(
             return true
         }
 
-        return other is PlanetDelteImageParams &&
+        return other is PlanetUploadImageParams &&
             planetId == other.planetId &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
@@ -430,5 +430,5 @@ private constructor(
         Objects.hash(planetId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "PlanetDelteImageParams{planetId=$planetId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "PlanetUploadImageParams{planetId=$planetId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
