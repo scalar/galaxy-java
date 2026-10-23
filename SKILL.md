@@ -1,26 +1,26 @@
 ---
 name: scalar-galaxy-java-sdk
-description: "Java SDK for Scalar Galaxy API. Use when writing Java code that calls Scalar Galaxy API with the com.scalar package: installing it, constructing and authenticating the client, and calling API operations."
+description: "Java SDK for Scalar Galaxy API. Use when writing Java code that calls Scalar Galaxy API with the com.scalar.galaxy package: installing it, constructing and authenticating the client, and calling API operations."
 ---
 
 # Scalar Galaxy Java SDK
 
-Generated Java client for Scalar Galaxy API, published as `com.scalar`. Use the generated client instead of hand-writing HTTP requests.
+Generated Java client for Scalar Galaxy API, published as `com.scalar.galaxy`. Use the generated client instead of hand-writing HTTP requests.
 
 ## Install
 
 Add the dependency to your Gradle build:
 
 ```kotlin
-implementation("com.scalar:galaxy-java:0.1.0") // x-release-please-version
+implementation("com.scalar.galaxy:java:0.1.0") // x-release-please-version
 ```
 
 Or declare it in your Maven `pom.xml`:
 
 ```xml
 <dependency>
-  <groupId>com.scalar</groupId>
-  <artifactId>galaxy-java</artifactId>
+  <groupId>com.scalar.galaxy</groupId>
+  <artifactId>java</artifactId>
   <version>0.1.0</version> <!-- x-release-please-version -->
 </dependency>
 ```
@@ -28,14 +28,14 @@ Or declare it in your Maven `pom.xml`:
 Or build the SDK from source, with JDK 21 installed:
 
 ```sh
-./gradlew :galaxy-java:build
+./gradlew :java:build
 ```
 
 ## Client setup and authentication
 
 ```java
-import com.scalar.client.GalaxyClient;
-import com.scalar.client.okhttp.GalaxyOkHttpClient;
+import com.scalar.galaxy.client.GalaxyClient;
+import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 
 GalaxyClient client =
     GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -55,9 +55,9 @@ Provide credentials using the options below. Environment variables are read auto
 ## Calling operations
 
 ```java
-import com.scalar.client.GalaxyClient;
-import com.scalar.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.client.GalaxyClient;
+import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
+import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
 
 GalaxyClient client =
     GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -76,7 +76,7 @@ Method names, parameter shapes, and response types are generated from the API de
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```java
-import com.scalar.errors.GalaxyServiceException;
+import com.scalar.galaxy.errors.GalaxyServiceException;
 
 try {
   PlanetListAllDataParams params =
