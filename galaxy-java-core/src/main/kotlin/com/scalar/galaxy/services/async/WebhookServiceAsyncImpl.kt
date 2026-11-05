@@ -4,6 +4,7 @@ package com.scalar.galaxy.services.async
 
 import com.scalar.galaxy.core.ClientOptions
 import com.scalar.galaxy.core.UnwrapWebhookParams
+import com.scalar.galaxy.core.http.Headers
 import com.scalar.galaxy.models.webhooks.UnwrapWebhookEvent
 import com.scalar.galaxy.services.blocking.WebhookServiceImpl
 import java.util.function.Consumer
@@ -25,6 +26,18 @@ class WebhookServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
     override fun unwrap(unwrapParams: UnwrapWebhookParams): UnwrapWebhookEvent =
         WebhookServiceImpl(clientOptions).unwrap(unwrapParams)
+
+    override fun unwrap(body: String, headers: Headers, secret: String?): UnwrapWebhookEvent =
+        WebhookServiceImpl(clientOptions).unwrap(body, headers, secret)
+
+    override fun verifySignature(unwrapParams: UnwrapWebhookParams) =
+        WebhookServiceImpl(clientOptions).verifySignature(unwrapParams)
+
+    override fun verifySignature(payload: String, headers: Headers, secret: String?) =
+        WebhookServiceImpl(clientOptions).verifySignature(payload, headers, secret)
+
+    override fun parseUnsafe(body: String): UnwrapWebhookEvent =
+        WebhookServiceImpl(clientOptions).parseUnsafe(body)
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         WebhookServiceAsync.WithRawResponse {

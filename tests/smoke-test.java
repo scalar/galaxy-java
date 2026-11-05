@@ -14,10 +14,10 @@ import com.scalar.galaxy.models.celestialbodies.CelestialBodyCreateParams;
 import com.scalar.galaxy.models.planets.Planet;
 import com.scalar.galaxy.models.planets.PlanetCreateParams;
 import com.scalar.galaxy.models.planets.PlanetDeleteParams;
-import com.scalar.galaxy.models.planets.PlanetDelteImageParams;
-import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.models.planets.PlanetListParams;
 import com.scalar.galaxy.models.planets.PlanetRetrieveParams;
 import com.scalar.galaxy.models.planets.PlanetUpdateParams;
+import com.scalar.galaxy.models.planets.PlanetUploadImageParams;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -50,9 +50,8 @@ final class SmokeTest {
   }
 
   private static void _smokeCase0() throws Exception {
-    PlanetListAllDataParams params =
-        PlanetListAllDataParams.builder().limit(10L).offset(0L).build();
-    var planet = client.planets().listAllData(params);
+    PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
+    var planet = client.planets().list(params);
   }
 
   private static void _smokeCase1() throws Exception {
@@ -81,17 +80,17 @@ final class SmokeTest {
   }
 
   private static void _smokeCase5() throws Exception {
-    PlanetDelteImageParams params = PlanetDelteImageParams.builder().planetId(1L).build();
-    var planet = client.planets().delteImage(params);
+    PlanetUploadImageParams params = PlanetUploadImageParams.builder().planetId(1L).build();
+    var planet = client.planets().uploadImage(params);
   }
 
   private static void _smokeCase6() throws Exception {
-    PlanetDelteImageParams params =
-        PlanetDelteImageParams.builder()
+    PlanetUploadImageParams params =
+        PlanetUploadImageParams.builder()
             .planetId(1L)
             .image(new java.io.ByteArrayInputStream(new byte[0]))
             .build();
-    var planet = client.planets().delteImage(params);
+    var planet = client.planets().uploadImage(params);
   }
 
   private static void _smokeCase7() throws Exception {
@@ -126,26 +125,25 @@ final class SmokeTest {
   }
 
   private static void _smokeCase11() throws Exception {
-    PlanetListAllDataParams params =
-        PlanetListAllDataParams.builder().limit(10L).offset(0L).build();
-    var planet = client.async().planets().listAllData(params).get();
+    PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
+    var planet = client.async().planets().list(params).get();
   }
 
   private static final List<SmokeCase> cases =
       List.of(
-          new SmokeCase("listAllData", "GET", "/planets", "", SmokeTest::_smokeCase0),
+          new SmokeCase("list", "GET", "/planets", "", SmokeTest::_smokeCase0),
           new SmokeCase("create", "POST", "/planets", "", SmokeTest::_smokeCase1),
           new SmokeCase("retrieve", "GET", "/planets/{planetId}", "", SmokeTest::_smokeCase2),
           new SmokeCase("update", "PUT", "/planets/{planetId}", "", SmokeTest::_smokeCase3),
           new SmokeCase("delete", "DELETE", "/planets/{planetId}", "", SmokeTest::_smokeCase4),
           new SmokeCase(
-              "delteImage",
+              "uploadImage",
               "POST",
               "/planets/{planetId}/image",
               "required params",
               SmokeTest::_smokeCase5),
           new SmokeCase(
-              "delteImage",
+              "uploadImage",
               "POST",
               "/planets/{planetId}/image",
               "all params",
@@ -154,7 +152,7 @@ final class SmokeTest {
           new SmokeCase("createUser", "POST", "/user/signup", "", SmokeTest::_smokeCase8),
           new SmokeCase("createToken", "POST", "/auth/token", "", SmokeTest::_smokeCase9),
           new SmokeCase("listMe", "GET", "/me", "", SmokeTest::_smokeCase10),
-          new SmokeCase("listAllData", "GET", "/planets", "async client", SmokeTest::_smokeCase11));
+          new SmokeCase("list", "GET", "/planets", "async client", SmokeTest::_smokeCase11));
 
   private static List<SmokeCase> selectedCases() {
     String filter = System.getenv("SCALAR_SMOKE_FILTER");

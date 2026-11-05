@@ -13,7 +13,7 @@ import kotlin.jvm.optionals.getOrNull
  * It's easy to say you know them all, but do you really? Retrieve all the planets and check whether
  * you missed one.
  */
-class PlanetListAllDataParams
+class PlanetListParams
 private constructor(
     private val limit: Long?,
     private val offset: Long?,
@@ -37,13 +37,13 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): PlanetListAllDataParams = builder().build()
+        @JvmStatic fun none(): PlanetListParams = builder().build()
 
-        /** Returns a mutable builder for constructing an instance of [PlanetListAllDataParams]. */
+        /** Returns a mutable builder for constructing an instance of [PlanetListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [PlanetListAllDataParams]. */
+    /** A builder for [PlanetListParams]. */
     class Builder internal constructor() {
 
         private var limit: Long? = null
@@ -52,11 +52,11 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(planetListAllDataParams: PlanetListAllDataParams) = apply {
-            limit = planetListAllDataParams.limit
-            offset = planetListAllDataParams.offset
-            additionalHeaders = planetListAllDataParams.additionalHeaders.toBuilder()
-            additionalQueryParams = planetListAllDataParams.additionalQueryParams.toBuilder()
+        internal fun from(planetListParams: PlanetListParams) = apply {
+            limit = planetListParams.limit
+            offset = planetListParams.offset
+            additionalHeaders = planetListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = planetListParams.additionalQueryParams.toBuilder()
         }
 
         /** The number of items to return */
@@ -184,12 +184,12 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [PlanetListAllDataParams].
+         * Returns an immutable instance of [PlanetListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): PlanetListAllDataParams =
-            PlanetListAllDataParams(
+        fun build(): PlanetListParams =
+            PlanetListParams(
                 limit,
                 offset,
                 additionalHeaders.build(),
@@ -213,7 +213,7 @@ private constructor(
             return true
         }
 
-        return other is PlanetListAllDataParams &&
+        return other is PlanetListParams &&
             limit == other.limit &&
             offset == other.offset &&
             additionalHeaders == other.additionalHeaders &&
@@ -224,5 +224,5 @@ private constructor(
         Objects.hash(limit, offset, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "PlanetListAllDataParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "PlanetListParams{limit=$limit, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

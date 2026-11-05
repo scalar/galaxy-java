@@ -5,12 +5,14 @@ package com.scalar.galaxy.services.blocking
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.scalar.galaxy.core.ClientOptions
 import com.scalar.galaxy.core.UnwrapWebhookParams
+import com.scalar.galaxy.core.WebhookVerificationException
+import com.scalar.galaxy.core.WebhookVerifier
 import com.scalar.galaxy.core.checkRequired
+import com.scalar.galaxy.core.http.Headers
+import com.scalar.galaxy.errors.GalaxyException
 import com.scalar.galaxy.errors.GalaxyInvalidDataException
 import com.scalar.galaxy.errors.GalaxyWebhookException
 import com.scalar.galaxy.models.webhooks.UnwrapWebhookEvent
-import com.standardwebhooks.Webhook
-import com.standardwebhooks.exceptions.WebhookVerificationException
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
@@ -43,14 +45,73 @@ class WebhookServiceImpl internal constructor(private val clientOptions: ClientO
                 val headersMap =
                     headers.names().associateWith { name -> headers.values(name) }.toMap()
 
-                val webhook = Webhook(webhookSecret)
-                webhook.verify(unwrapParams.body(), headersMap)
+                val verifier = WebhookVerifier(webhookSecret)
+                verifier.verify(unwrapParams.body(), headersMap)
             } catch (e: WebhookVerificationException) {
                 throw GalaxyWebhookException("Could not verify webhook event signature", e)
             }
+        } else if (unwrapParams.secret().getOrNull() != null) {
+            throw GalaxyWebhookException(
+                "Could not verify webhook event signature: a secret is set but the params carry no headers"
+            )
         }
         return unwrap(unwrapParams.body())
     }
+
+    override fun unwrap(body: String, headers: Headers, secret: String?): UnwrapWebhookEvent {
+        val unwrapParams =
+            UnwrapWebhookParams.builder().body(body).headers(headers).secret(secret).build()
+        val requestHeaders =
+            unwrapParams.headers().getOrNull()
+                ?: throw GalaxyWebhookException("Webhook headers are required")
+        try {
+            val webhookSecret =
+                unwrapParams.secret().getOrNull()
+                    ?: throw GalaxyException(
+                        "The webhook secret must either be set on the client class, or passed to this method"
+                    )
+
+            val headersMap =
+                requestHeaders.names().associateWith { name -> requestHeaders.values(name) }.toMap()
+
+            val verifier = WebhookVerifier(webhookSecret)
+            verifier.verify(unwrapParams.body(), headersMap)
+        } catch (e: WebhookVerificationException) {
+            throw GalaxyWebhookException("Could not verify webhook event signature", e)
+        } catch (e: IllegalArgumentException) {
+            throw GalaxyWebhookException("Invalid webhook secret", e)
+        }
+        return unwrap(body)
+    }
+
+    override fun verifySignature(unwrapParams: UnwrapWebhookParams) {
+        val headers =
+            unwrapParams.headers().getOrNull()
+                ?: throw GalaxyWebhookException("Webhook headers are required")
+        try {
+            val webhookSecret =
+                unwrapParams.secret().getOrNull()
+                    ?: throw GalaxyException(
+                        "The webhook secret must either be set on the client class, or passed to this method"
+                    )
+
+            val headersMap = headers.names().associateWith { name -> headers.values(name) }.toMap()
+
+            val verifier = WebhookVerifier(webhookSecret)
+            verifier.verify(unwrapParams.body(), headersMap)
+        } catch (e: WebhookVerificationException) {
+            throw GalaxyWebhookException("Could not verify webhook event signature", e)
+        } catch (e: IllegalArgumentException) {
+            throw GalaxyWebhookException("Invalid webhook secret", e)
+        }
+    }
+
+    override fun verifySignature(payload: String, headers: Headers, secret: String?) =
+        verifySignature(
+            UnwrapWebhookParams.builder().body(payload).headers(headers).secret(secret).build()
+        )
+
+    override fun parseUnsafe(body: String): UnwrapWebhookEvent = unwrap(body)
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         WebhookService.WithRawResponse {
