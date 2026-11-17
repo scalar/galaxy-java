@@ -46,16 +46,6 @@ interface PlanetServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Planet>
 
-    /** @see create */
-    fun create(
-        planet: Planet,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Planet> =
-        create(PlanetCreateParams.builder().planet(planet).build(), requestOptions)
-
-    /** @see create */
-    fun create(planet: Planet): CompletableFuture<Planet> = create(planet, RequestOptions.none())
-
     /**
      * You'll better learn a little bit more about the planets. It might come in handy once space
      * travel is available for everyone.
@@ -127,7 +117,7 @@ interface PlanetServiceAsync {
 
     /** @see list */
     fun list(
-        params: PlanetListParams = PlanetListParams.none()
+        params: PlanetListParams = PlanetListParams.none(),
     ): CompletableFuture<PlanetListResponse> = list(params, RequestOptions.none())
 
     /** @see list */
@@ -216,7 +206,7 @@ interface PlanetServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): PlanetServiceAsync.WithRawResponse
 
         /**
@@ -231,17 +221,6 @@ interface PlanetServiceAsync {
             params: PlanetCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Planet>>
-
-        /** @see create */
-        fun create(
-            planet: Planet,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Planet>> =
-            create(PlanetCreateParams.builder().planet(planet).build(), requestOptions)
-
-        /** @see create */
-        fun create(planet: Planet): CompletableFuture<HttpResponseFor<Planet>> =
-            create(planet, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `get /planets/{planetId}`, but is otherwise the same as
@@ -325,13 +304,13 @@ interface PlanetServiceAsync {
 
         /** @see list */
         fun list(
-            params: PlanetListParams = PlanetListParams.none()
+            params: PlanetListParams = PlanetListParams.none(),
         ): CompletableFuture<HttpResponseFor<PlanetListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<PlanetListResponse>> =
             list(PlanetListParams.none(), requestOptions)
 
@@ -378,7 +357,7 @@ interface PlanetServiceAsync {
          * same as [PlanetServiceAsync.uploadImage].
          */
         fun uploadImage(
-            planetId: Long
+            planetId: Long,
         ): CompletableFuture<HttpResponseFor<PlanetUploadImageResponse>> =
             uploadImage(planetId, PlanetUploadImageParams.none())
 
@@ -405,7 +384,7 @@ interface PlanetServiceAsync {
 
         /** @see uploadImage */
         fun uploadImage(
-            params: PlanetUploadImageParams
+            params: PlanetUploadImageParams,
         ): CompletableFuture<HttpResponseFor<PlanetUploadImageResponse>> =
             uploadImage(params, RequestOptions.none())
 

@@ -10,7 +10,6 @@ import com.scalar.galaxy.models.authentication.AuthenticationCreateTokenParams
 import com.scalar.galaxy.models.authentication.AuthenticationCreateTokenResponse
 import com.scalar.galaxy.models.authentication.AuthenticationCreateUserParams
 import com.scalar.galaxy.models.authentication.AuthenticationListMeParams
-import com.scalar.galaxy.models.authentication.Credentials
 import com.scalar.galaxy.models.authentication.User
 import java.util.function.Consumer
 
@@ -41,20 +40,6 @@ interface AuthenticationService {
         params: AuthenticationCreateTokenParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): AuthenticationCreateTokenResponse
-
-    /** @see createToken */
-    fun createToken(
-        credentials: Credentials,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): AuthenticationCreateTokenResponse =
-        createToken(
-            AuthenticationCreateTokenParams.builder().credentials(credentials).build(),
-            requestOptions,
-        )
-
-    /** @see createToken */
-    fun createToken(credentials: Credentials): AuthenticationCreateTokenResponse =
-        createToken(credentials, RequestOptions.none())
 
     /** Time to create a user account, eh? */
     fun createUser(params: AuthenticationCreateUserParams): User =
@@ -94,7 +79,7 @@ interface AuthenticationService {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): AuthenticationService.WithRawResponse
 
         /**
@@ -103,7 +88,7 @@ interface AuthenticationService {
          */
         @MustBeClosed
         fun createToken(
-            params: AuthenticationCreateTokenParams
+            params: AuthenticationCreateTokenParams,
         ): HttpResponseFor<AuthenticationCreateTokenResponse> =
             createToken(params, RequestOptions.none())
 
@@ -113,24 +98,6 @@ interface AuthenticationService {
             params: AuthenticationCreateTokenParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<AuthenticationCreateTokenResponse>
-
-        /** @see createToken */
-        @MustBeClosed
-        fun createToken(
-            credentials: Credentials,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AuthenticationCreateTokenResponse> =
-            createToken(
-                AuthenticationCreateTokenParams.builder().credentials(credentials).build(),
-                requestOptions,
-            )
-
-        /** @see createToken */
-        @MustBeClosed
-        fun createToken(
-            credentials: Credentials
-        ): HttpResponseFor<AuthenticationCreateTokenResponse> =
-            createToken(credentials, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `post /user/signup`, but is otherwise the same as
@@ -164,7 +131,7 @@ interface AuthenticationService {
         /** @see listMe */
         @MustBeClosed
         fun listMe(
-            params: AuthenticationListMeParams = AuthenticationListMeParams.none()
+            params: AuthenticationListMeParams = AuthenticationListMeParams.none(),
         ): HttpResponseFor<User> = listMe(params, RequestOptions.none())
 
         /** @see listMe */

@@ -339,7 +339,7 @@ private constructor(
                     MultipartField.builder<InputStream>()
                         .value(path.inputStream())
                         .filename(path.name)
-                        .build()
+                        .build(),
                 )
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

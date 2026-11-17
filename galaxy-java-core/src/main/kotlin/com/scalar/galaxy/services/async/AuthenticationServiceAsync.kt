@@ -9,7 +9,6 @@ import com.scalar.galaxy.models.authentication.AuthenticationCreateTokenParams
 import com.scalar.galaxy.models.authentication.AuthenticationCreateTokenResponse
 import com.scalar.galaxy.models.authentication.AuthenticationCreateUserParams
 import com.scalar.galaxy.models.authentication.AuthenticationListMeParams
-import com.scalar.galaxy.models.authentication.Credentials
 import com.scalar.galaxy.models.authentication.User
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
@@ -34,7 +33,7 @@ interface AuthenticationServiceAsync {
 
     /** Yeah, this is the boring security stuff. Just get your super secret token and move on. */
     fun createToken(
-        params: AuthenticationCreateTokenParams
+        params: AuthenticationCreateTokenParams,
     ): CompletableFuture<AuthenticationCreateTokenResponse> =
         createToken(params, RequestOptions.none())
 
@@ -43,22 +42,6 @@ interface AuthenticationServiceAsync {
         params: AuthenticationCreateTokenParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<AuthenticationCreateTokenResponse>
-
-    /** @see createToken */
-    fun createToken(
-        credentials: Credentials,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<AuthenticationCreateTokenResponse> =
-        createToken(
-            AuthenticationCreateTokenParams.builder().credentials(credentials).build(),
-            requestOptions,
-        )
-
-    /** @see createToken */
-    fun createToken(
-        credentials: Credentials
-    ): CompletableFuture<AuthenticationCreateTokenResponse> =
-        createToken(credentials, RequestOptions.none())
 
     /** Time to create a user account, eh? */
     fun createUser(params: AuthenticationCreateUserParams): CompletableFuture<User> =
@@ -81,7 +64,7 @@ interface AuthenticationServiceAsync {
 
     /** @see listMe */
     fun listMe(
-        params: AuthenticationListMeParams = AuthenticationListMeParams.none()
+        params: AuthenticationListMeParams = AuthenticationListMeParams.none(),
     ): CompletableFuture<User> = listMe(params, RequestOptions.none())
 
     /** @see listMe */
@@ -100,7 +83,7 @@ interface AuthenticationServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): AuthenticationServiceAsync.WithRawResponse
 
         /**
@@ -108,7 +91,7 @@ interface AuthenticationServiceAsync {
          * [AuthenticationServiceAsync.createToken].
          */
         fun createToken(
-            params: AuthenticationCreateTokenParams
+            params: AuthenticationCreateTokenParams,
         ): CompletableFuture<HttpResponseFor<AuthenticationCreateTokenResponse>> =
             createToken(params, RequestOptions.none())
 
@@ -118,28 +101,12 @@ interface AuthenticationServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<AuthenticationCreateTokenResponse>>
 
-        /** @see createToken */
-        fun createToken(
-            credentials: Credentials,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<AuthenticationCreateTokenResponse>> =
-            createToken(
-                AuthenticationCreateTokenParams.builder().credentials(credentials).build(),
-                requestOptions,
-            )
-
-        /** @see createToken */
-        fun createToken(
-            credentials: Credentials
-        ): CompletableFuture<HttpResponseFor<AuthenticationCreateTokenResponse>> =
-            createToken(credentials, RequestOptions.none())
-
         /**
          * Returns a raw HTTP response for `post /user/signup`, but is otherwise the same as
          * [AuthenticationServiceAsync.createUser].
          */
         fun createUser(
-            params: AuthenticationCreateUserParams
+            params: AuthenticationCreateUserParams,
         ): CompletableFuture<HttpResponseFor<User>> = createUser(params, RequestOptions.none())
 
         /** @see createUser */
@@ -163,7 +130,7 @@ interface AuthenticationServiceAsync {
 
         /** @see listMe */
         fun listMe(
-            params: AuthenticationListMeParams = AuthenticationListMeParams.none()
+            params: AuthenticationListMeParams = AuthenticationListMeParams.none(),
         ): CompletableFuture<HttpResponseFor<User>> = listMe(params, RequestOptions.none())
 
         /** @see listMe */

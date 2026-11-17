@@ -605,8 +605,8 @@ private constructor(
                                         it.name =
                                             "galaxy-stream-handler-thread-${count.getAndIncrement()}"
                                     }
-                            }
-                        )
+                            },
+                        ),
                     )
             val sleeper = sleeper ?: PhantomReachableSleeper(DefaultSleeper())
 
@@ -689,12 +689,12 @@ private constructor(
                                     .httpClient(httpClient)
                                     .clock(clock)
                                     .level(logLevel)
-                                    .build()
+                                    .build(),
                             )
                             .sleeper(sleeper)
                             .clock(clock)
                             .maxRetries(maxRetries)
-                            .build()
+                            .build(),
                     )
                     .build(),
                 checkJacksonVersionCompatibility,

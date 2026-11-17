@@ -119,7 +119,7 @@ private constructor(
                 override fun visitSatellite(satellite: Satellite) {
                     satellite.validate()
                 }
-            }
+            },
         )
         validated = true
     }
@@ -146,7 +146,7 @@ private constructor(
                 override fun visitSatellite(satellite: Satellite) = satellite.validity()
 
                 override fun unknown(json: JsonValue?) = 0
-            }
+            },
         )
 
     override fun equals(other: Any?): Boolean {
