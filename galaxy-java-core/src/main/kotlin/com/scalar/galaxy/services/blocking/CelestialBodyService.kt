@@ -8,7 +8,8 @@ import com.scalar.galaxy.core.RequestOptions
 import com.scalar.galaxy.core.http.HttpResponseFor
 import com.scalar.galaxy.models.celestialbodies.CelestialBody
 import com.scalar.galaxy.models.celestialbodies.CelestialBodyCreateParams
-import com.scalar.galaxy.models.planets.Planet
+import com.scalar.galaxy.models.celestialbodies.CelestialBodyParam
+import com.scalar.galaxy.models.planets.PlanetParam
 import java.util.function.Consumer
 
 /** Celestial bodies are the planets and satellites in the Scalar Galaxy. */
@@ -41,7 +42,7 @@ interface CelestialBodyService {
 
     /** @see create */
     fun create(
-        celestialBody: CelestialBody,
+        celestialBody: CelestialBodyParam,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CelestialBody =
         create(
@@ -50,26 +51,26 @@ interface CelestialBodyService {
         )
 
     /** @see create */
-    fun create(celestialBody: CelestialBody): CelestialBody =
+    fun create(celestialBody: CelestialBodyParam): CelestialBody =
         create(celestialBody, RequestOptions.none())
 
     /** @see create */
     fun create(
-        planet: Planet,
+        planet: PlanetParam,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CelestialBody = create(CelestialBody.ofPlanet(planet), requestOptions)
+    ): CelestialBody = create(CelestialBodyParam.ofPlanet(planet), requestOptions)
 
     /** @see create */
-    fun create(planet: Planet): CelestialBody = create(planet, RequestOptions.none())
+    fun create(planet: PlanetParam): CelestialBody = create(planet, RequestOptions.none())
 
     /** @see create */
     fun create(
-        satellite: CelestialBody.Satellite,
+        satellite: CelestialBodyParam.Satellite,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CelestialBody = create(CelestialBody.ofSatellite(satellite), requestOptions)
+    ): CelestialBody = create(CelestialBodyParam.ofSatellite(satellite), requestOptions)
 
     /** @see create */
-    fun create(satellite: CelestialBody.Satellite): CelestialBody =
+    fun create(satellite: CelestialBodyParam.Satellite): CelestialBody =
         create(satellite, RequestOptions.none())
 
     /**
@@ -83,7 +84,7 @@ interface CelestialBodyService {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): CelestialBodyService.WithRawResponse
 
         /**
@@ -104,7 +105,7 @@ interface CelestialBodyService {
         /** @see create */
         @MustBeClosed
         fun create(
-            celestialBody: CelestialBody,
+            celestialBody: CelestialBodyParam,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CelestialBody> =
             create(
@@ -114,32 +115,33 @@ interface CelestialBodyService {
 
         /** @see create */
         @MustBeClosed
-        fun create(celestialBody: CelestialBody): HttpResponseFor<CelestialBody> =
+        fun create(celestialBody: CelestialBodyParam): HttpResponseFor<CelestialBody> =
             create(celestialBody, RequestOptions.none())
 
         /** @see create */
         @MustBeClosed
         fun create(
-            planet: Planet,
+            planet: PlanetParam,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<CelestialBody> = create(CelestialBody.ofPlanet(planet), requestOptions)
+        ): HttpResponseFor<CelestialBody> =
+            create(CelestialBodyParam.ofPlanet(planet), requestOptions)
 
         /** @see create */
         @MustBeClosed
-        fun create(planet: Planet): HttpResponseFor<CelestialBody> =
+        fun create(planet: PlanetParam): HttpResponseFor<CelestialBody> =
             create(planet, RequestOptions.none())
 
         /** @see create */
         @MustBeClosed
         fun create(
-            satellite: CelestialBody.Satellite,
+            satellite: CelestialBodyParam.Satellite,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CelestialBody> =
-            create(CelestialBody.ofSatellite(satellite), requestOptions)
+            create(CelestialBodyParam.ofSatellite(satellite), requestOptions)
 
         /** @see create */
         @MustBeClosed
-        fun create(satellite: CelestialBody.Satellite): HttpResponseFor<CelestialBody> =
+        fun create(satellite: CelestialBodyParam.Satellite): HttpResponseFor<CelestialBody> =
             create(satellite, RequestOptions.none())
     }
 }

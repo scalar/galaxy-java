@@ -362,6 +362,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .id()
          * .name()
          * ```
          */
@@ -371,7 +372,7 @@ private constructor(
     /** A builder for [Planet]. */
     class Builder internal constructor() {
 
-        private var id: JsonField<Long> = JsonMissing.of()
+        private var id: JsonField<Long>? = null
         private var name: JsonField<String>? = null
         private var atmosphere: JsonField<MutableList<Atmosphere>>? = null
         private var creator: JsonField<User> = JsonMissing.of()
@@ -660,6 +661,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .id()
          * .name()
          * ```
          *
@@ -667,7 +669,7 @@ private constructor(
          */
         fun build(): Planet =
             Planet(
-                id,
+                checkRequired("id", id),
                 checkRequired("name", name),
                 (atmosphere ?: JsonMissing.of()).map { it.toImmutable() },
                 creator,

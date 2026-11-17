@@ -93,7 +93,7 @@ private constructor(
                 override fun visitNewPlanet(newPlanet: NewPlanetWebhookEvent) {
                     newPlanet.validate()
                 }
-            }
+            },
         )
         validated = true
     }
@@ -118,7 +118,7 @@ private constructor(
                 override fun visitNewPlanet(newPlanet: NewPlanetWebhookEvent) = newPlanet.validity()
 
                 override fun unknown(json: JsonValue?) = 0
-            }
+            },
         )
 
     override fun equals(other: Any?): Boolean {
@@ -179,7 +179,7 @@ private constructor(
                 sequenceOf(
                         tryDeserialize(node, jacksonTypeRef<NewPlanetWebhookEvent>())?.let {
                             UnwrapWebhookEvent(newPlanet = it, _json = json)
-                        }
+                        },
                     )
                     .filterNotNull()
                     .allMaxBy { it.validity() }
