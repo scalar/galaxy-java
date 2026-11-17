@@ -37,8 +37,9 @@ Or build the SDK from source, with JDK 21 installed:
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 ```
 
 Provide credentials using the options below. Environment variables are read automatically when the target runtime supports them:
@@ -59,10 +60,14 @@ import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import com.scalar.galaxy.models.planets.PlanetListParams;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
+PlanetListParams params = PlanetListParams.builder()
+    .limit(10L)
+    .offset(0L)
+    .build();
 var planet = client.planets().list(params);
 
 System.out.println(planet);
@@ -78,11 +83,14 @@ Non-success responses throw generated API errors. Error objects expose status, h
 import com.scalar.galaxy.errors.GalaxyServiceException;
 
 try {
-  PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
-  var planet = client.planets().list(params);
+    PlanetListParams params = PlanetListParams.builder()
+        .limit(10L)
+        .offset(0L)
+        .build();
+    var planet = client.planets().list(params);
 } catch (GalaxyServiceException err) {
-  System.out.println(err.statusCode() + " " + err.body());
-  throw err;
+    System.out.println(err.statusCode() + " " + err.body());
+    throw err;
 }
 ```
 

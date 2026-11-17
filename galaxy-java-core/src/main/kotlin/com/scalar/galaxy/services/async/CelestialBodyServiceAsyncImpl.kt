@@ -47,10 +47,10 @@ class CelestialBodyServiceAsyncImpl internal constructor(private val clientOptio
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): CelestialBodyServiceAsync.WithRawResponse =
             CelestialBodyServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val createHandler: Handler<CelestialBody> =

@@ -45,13 +45,6 @@ interface PlanetService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Planet
 
-    /** @see create */
-    fun create(planet: Planet, requestOptions: RequestOptions = RequestOptions.none()): Planet =
-        create(PlanetCreateParams.builder().planet(planet).build(), requestOptions)
-
-    /** @see create */
-    fun create(planet: Planet): Planet = create(planet, RequestOptions.none())
-
     /**
      * You'll better learn a little bit more about the planets. It might come in handy once space
      * travel is available for everyone.
@@ -208,18 +201,6 @@ interface PlanetService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Planet>
 
-        /** @see create */
-        @MustBeClosed
-        fun create(
-            planet: Planet,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Planet> =
-            create(PlanetCreateParams.builder().planet(planet).build(), requestOptions)
-
-        /** @see create */
-        @MustBeClosed
-        fun create(planet: Planet): HttpResponseFor<Planet> = create(planet, RequestOptions.none())
-
         /**
          * Returns a raw HTTP response for `get /planets/{planetId}`, but is otherwise the same as
          * [PlanetService.retrieve].
@@ -307,7 +288,7 @@ interface PlanetService {
         /** @see list */
         @MustBeClosed
         fun list(
-            params: PlanetListParams = PlanetListParams.none()
+            params: PlanetListParams = PlanetListParams.none(),
         ): HttpResponseFor<PlanetListResponse> = list(params, RequestOptions.none())
 
         /** @see list */
@@ -388,7 +369,7 @@ interface PlanetService {
         /** @see uploadImage */
         @MustBeClosed
         fun uploadImage(
-            params: PlanetUploadImageParams
+            params: PlanetUploadImageParams,
         ): HttpResponseFor<PlanetUploadImageResponse> = uploadImage(params, RequestOptions.none())
 
         /** @see uploadImage */

@@ -43,10 +43,10 @@ class WebhookServiceAsyncImpl internal constructor(private val clientOptions: Cl
         WebhookServiceAsync.WithRawResponse {
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): WebhookServiceAsync.WithRawResponse =
             WebhookServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
     }
 }

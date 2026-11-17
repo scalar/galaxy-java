@@ -66,10 +66,14 @@ import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import com.scalar.galaxy.models.planets.PlanetListParams;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
+PlanetListParams params = PlanetListParams.builder()
+    .limit(10L)
+    .offset(0L)
+    .build();
 var planet = client.planets().list(params);
 
 System.out.println(planet);
@@ -90,10 +94,14 @@ import com.scalar.galaxy.client.GalaxyClientAsync;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClientAsync;
 import com.scalar.galaxy.models.planets.PlanetListParams;
 
-GalaxyClientAsync client =
-    GalaxyOkHttpClientAsync.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClientAsync client = GalaxyOkHttpClientAsync.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
+PlanetListParams params = PlanetListParams.builder()
+    .limit(10L)
+    .offset(0L)
+    .build();
 client.planets().list(params).thenAccept(planet -> System.out.println(planet));
 ```
 
@@ -253,11 +261,14 @@ Non-success responses throw generated API errors. Error objects expose status, h
 import com.scalar.galaxy.errors.GalaxyServiceException;
 
 try {
-  PlanetListParams params = PlanetListParams.builder().limit(10L).offset(0L).build();
-  var planet = client.planets().list(params);
+    PlanetListParams params = PlanetListParams.builder()
+        .limit(10L)
+        .offset(0L)
+        .build();
+    var planet = client.planets().list(params);
 } catch (GalaxyServiceException err) {
-  System.out.println(err.statusCode() + " " + err.body());
-  throw err;
+    System.out.println(err.statusCode() + " " + err.body());
+    throw err;
 }
 ```
 
@@ -274,12 +285,11 @@ import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import java.time.Duration;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder()
-        .baseUrl("https://galaxy.scalar.com")
-        .timeout(Duration.ofSeconds(60))
-        .maxRetries(2)
-        .build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .baseUrl("https://galaxy.scalar.com")
+    .timeout(Duration.ofSeconds(60))
+    .maxRetries(2)
+    .build();
 ```
 
 | Option | Type | Default | Description |

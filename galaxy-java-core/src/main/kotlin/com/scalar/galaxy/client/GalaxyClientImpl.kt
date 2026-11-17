@@ -86,10 +86,10 @@ class GalaxyClientImpl(private val clientOptions: ClientOptions) : GalaxyClient 
         }
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): GalaxyClient.WithRawResponse =
             GalaxyClientImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         /** Everything about planets */
