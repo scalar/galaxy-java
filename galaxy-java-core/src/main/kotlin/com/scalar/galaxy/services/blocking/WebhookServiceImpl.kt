@@ -7,7 +7,6 @@ import com.scalar.galaxy.core.ClientOptions
 import com.scalar.galaxy.core.UnwrapWebhookParams
 import com.scalar.galaxy.core.WebhookVerificationException
 import com.scalar.galaxy.core.WebhookVerifier
-import com.scalar.galaxy.core.checkRequired
 import com.scalar.galaxy.core.http.Headers
 import com.scalar.galaxy.errors.GalaxyException
 import com.scalar.galaxy.errors.GalaxyInvalidDataException
@@ -40,7 +39,10 @@ class WebhookServiceImpl internal constructor(private val clientOptions: ClientO
         if (headers != null) {
             try {
                 val webhookSecret =
-                    checkRequired("webhookSecret", unwrapParams.secret().getOrNull())
+                    unwrapParams.secret().getOrNull()
+                        ?: throw GalaxyException(
+                            "The webhook secret must either be set on the client class, or passed to this method",
+                        )
 
                 val headersMap =
                     headers.names().associateWith { name -> headers.values(name) }.toMap()
@@ -48,7 +50,12 @@ class WebhookServiceImpl internal constructor(private val clientOptions: ClientO
                 val verifier = WebhookVerifier(webhookSecret)
                 verifier.verify(unwrapParams.body(), headersMap)
             } catch (e: WebhookVerificationException) {
-                throw GalaxyWebhookException("Could not verify webhook event signature", e)
+                throw GalaxyWebhookException(
+                    "Could not verify webhook event signature",
+                    e.toWebhookExceptionCause(),
+                )
+            } catch (e: IllegalArgumentException) {
+                throw GalaxyWebhookException("Invalid webhook secret", e)
             }
         } else if (unwrapParams.secret().getOrNull() != null) {
             throw GalaxyWebhookException(
@@ -77,7 +84,10 @@ class WebhookServiceImpl internal constructor(private val clientOptions: ClientO
             val verifier = WebhookVerifier(webhookSecret)
             verifier.verify(unwrapParams.body(), headersMap)
         } catch (e: WebhookVerificationException) {
-            throw GalaxyWebhookException("Could not verify webhook event signature", e)
+            throw GalaxyWebhookException(
+                "Could not verify webhook event signature",
+                e.toWebhookExceptionCause(),
+            )
         } catch (e: IllegalArgumentException) {
             throw GalaxyWebhookException("Invalid webhook secret", e)
         }
@@ -100,7 +110,10 @@ class WebhookServiceImpl internal constructor(private val clientOptions: ClientO
             val verifier = WebhookVerifier(webhookSecret)
             verifier.verify(unwrapParams.body(), headersMap)
         } catch (e: WebhookVerificationException) {
-            throw GalaxyWebhookException("Could not verify webhook event signature", e)
+            throw GalaxyWebhookException(
+                "Could not verify webhook event signature",
+                e.toWebhookExceptionCause(),
+            )
         } catch (e: IllegalArgumentException) {
             throw GalaxyWebhookException("Invalid webhook secret", e)
         }

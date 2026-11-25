@@ -59,6 +59,7 @@ Provide credentials using the options below. Environment variables are read auto
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import com.scalar.galaxy.models.planets.PlanetListParams;
+import com.scalar.galaxy.models.planets.PlanetListResponse;
 
 GalaxyClient client = GalaxyOkHttpClient.builder()
     .bearerAuth(System.getenv("BEARER_AUTH"))
@@ -68,7 +69,7 @@ PlanetListParams params = PlanetListParams.builder()
     .limit(10L)
     .offset(0L)
     .build();
-var planet = client.planets().list(params);
+PlanetListResponse planet = client.planets().list(params);
 
 System.out.println(planet);
 ```
@@ -80,6 +81,8 @@ Method names, parameter shapes, and response types are generated from the API de
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```java
+import com.scalar.galaxy.models.planets.PlanetListParams;
+import com.scalar.galaxy.models.planets.PlanetListResponse;
 import com.scalar.galaxy.errors.GalaxyServiceException;
 
 try {
@@ -87,7 +90,7 @@ try {
         .limit(10L)
         .offset(0L)
         .build();
-    var planet = client.planets().list(params);
+    PlanetListResponse planet = client.planets().list(params);
 } catch (GalaxyServiceException err) {
     System.out.println(err.statusCode() + " " + err.body());
     throw err;

@@ -70,15 +70,18 @@ final class PlanetServiceTest {
               PlanetCreateParams.builder()
                   .name("Mars")
                   .description("The red planet")
-                  .type(PlanetCreateParams.Type.of("terrestrial"))
+                  .type(PlanetCreateParams.Type.TERRESTRIAL)
                   .habitabilityIndex(0.68f)
                   .physicalProperties(PlanetCreateParams.PhysicalProperties.builder().build())
-                  .atmosphere(java.util.List.of(PlanetCreateParams.Atmosphere.builder().build()))
+                  .atmosphere(
+                      java.util.Arrays.asList(PlanetCreateParams.Atmosphere.builder().build()))
                   .discoveredAt(java.time.OffsetDateTime.now())
                   .image("https://cdn.scalar.com/photos/mars.jpg")
-                  .satellites(java.util.List.of(JsonValue.from(java.util.Map.of("name", "Phobos"))))
+                  .satellites(
+                      java.util.Arrays.asList(
+                          JsonValue.from(java.util.Collections.singletonMap("name", "Phobos"))))
                   .creator(UserParam.builder().build())
-                  .tags(java.util.List.of(""))
+                  .tags(java.util.Arrays.asList(""))
                   .successCallbackUrl("https://example.com/webhook")
                   .failureCallbackUrl("https://example.com/webhook")
                   .build();
@@ -126,15 +129,18 @@ final class PlanetServiceTest {
                   .planetId(1L)
                   .name("Mars")
                   .description("The red planet")
-                  .type(PlanetUpdateParams.Type.of("terrestrial"))
+                  .type(PlanetUpdateParams.Type.TERRESTRIAL)
                   .habitabilityIndex(0.68f)
                   .physicalProperties(PlanetUpdateParams.PhysicalProperties.builder().build())
-                  .atmosphere(java.util.List.of(PlanetUpdateParams.Atmosphere.builder().build()))
+                  .atmosphere(
+                      java.util.Arrays.asList(PlanetUpdateParams.Atmosphere.builder().build()))
                   .discoveredAt(java.time.OffsetDateTime.now())
                   .image("https://cdn.scalar.com/photos/mars.jpg")
-                  .satellites(java.util.List.of(JsonValue.from(java.util.Map.of("name", "Phobos"))))
+                  .satellites(
+                      java.util.Arrays.asList(
+                          JsonValue.from(java.util.Collections.singletonMap("name", "Phobos"))))
                   .creator(UserParam.builder().build())
-                  .tags(java.util.List.of(""))
+                  .tags(java.util.Arrays.asList(""))
                   .successCallbackUrl("https://example.com/webhook")
                   .failureCallbackUrl("https://example.com/webhook")
                   .build();
