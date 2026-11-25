@@ -65,6 +65,7 @@ Or build the SDK from source, with JDK 21 installed:
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import com.scalar.galaxy.models.planets.PlanetListParams;
+import com.scalar.galaxy.models.planets.PlanetListResponse;
 
 GalaxyClient client = GalaxyOkHttpClient.builder()
     .bearerAuth(System.getenv("BEARER_AUTH"))
@@ -74,7 +75,7 @@ PlanetListParams params = PlanetListParams.builder()
     .limit(10L)
     .offset(0L)
     .build();
-var planet = client.planets().list(params);
+PlanetListResponse planet = client.planets().list(params);
 
 System.out.println(planet);
 ```
@@ -178,9 +179,13 @@ The SDK deserializes with reflection, so shrinkers need to be told which members
 from the artifact automatically. Copy them into your own configuration only if your build does not read
 rules published by dependencies.
 
-Note that those rules keep the whole generated SDK package, so a minified build does not shrink or obfuscate
-the generated classes. That is deliberate: a narrower rule set drops the annotations the SDK uses to omit unset
-properties, and a shrunk build then fails at runtime on the first optional property a caller leaves out.
+The rules keep what Jackson reaches through reflection: the constructors and annotated members it binds, the
+annotation the SDK uses to omit unset properties, and the Kotlin metadata that tells it which constructor
+parameters have defaults. Every class with a custom serializer or deserializer — each union type and the core
+`JsonField` and `JsonValue` types — is kept whole and under its own name, which also keeps every model its
+members refer to. The SDK's enums keep the lookups `Enum.valueOf` makes by reflection, and the two client
+implementations keep their names, which each client sends in its `User-Agent` header. Other generated classes
+can still be shrunk and obfuscated, so a minified build drops the ones it never reaches and renames the rest.
 
 The `galaxy-java-proguard-test` module checks those rules hold: `./gradlew testProGuard testR8` shrinks the SDK
 with each shrinker under exactly the published rules and runs the compatibility test out of the shrunk jar.
@@ -258,6 +263,8 @@ Declared schemes:
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```java
+import com.scalar.galaxy.models.planets.PlanetListParams;
+import com.scalar.galaxy.models.planets.PlanetListResponse;
 import com.scalar.galaxy.errors.GalaxyServiceException;
 
 try {
@@ -265,7 +272,7 @@ try {
         .limit(10L)
         .offset(0L)
         .build();
-    var planet = client.planets().list(params);
+    PlanetListResponse planet = client.planets().list(params);
 } catch (GalaxyServiceException err) {
     System.out.println(err.statusCode() + " " + err.body());
     throw err;
@@ -286,6 +293,7 @@ import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import java.time.Duration;
 
 GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
     .baseUrl("https://galaxy.scalar.com")
     .timeout(Duration.ofSeconds(60))
     .maxRetries(2)
@@ -337,11 +345,12 @@ The webhook helper verifies the signature of each delivery your server receives,
 
 ```java
 import com.scalar.galaxy.core.http.Headers;
+import com.scalar.galaxy.models.webhooks.UnwrapWebhookEvent;
 
 // `body` is the raw request body; `requestHeaders` maps each request header to its values.
 // `secret` is your signing secret: the webhook helper reads none from the client.
 Headers headers = Headers.builder().putAll(requestHeaders).build();
-var event = client.webhooks().unwrap(body, headers, secret);
+UnwrapWebhookEvent event = client.webhooks().unwrap(body, headers, secret);
 ```
 
 The webhook helper reads no secret from the client, so pass it as `secret` on every call.
