@@ -9,12 +9,12 @@ import com.scalar.galaxy.core.http.HttpResponseFor
 import com.scalar.galaxy.models.planets.Planet
 import com.scalar.galaxy.models.planets.PlanetCreateParams
 import com.scalar.galaxy.models.planets.PlanetDeleteParams
-import com.scalar.galaxy.models.planets.PlanetDelteImageParams
-import com.scalar.galaxy.models.planets.PlanetDelteImageResponse
-import com.scalar.galaxy.models.planets.PlanetListAllDataParams
-import com.scalar.galaxy.models.planets.PlanetListAllDataResponse
+import com.scalar.galaxy.models.planets.PlanetListParams
+import com.scalar.galaxy.models.planets.PlanetListResponse
 import com.scalar.galaxy.models.planets.PlanetRetrieveParams
 import com.scalar.galaxy.models.planets.PlanetUpdateParams
+import com.scalar.galaxy.models.planets.PlanetUploadImageParams
+import com.scalar.galaxy.models.planets.PlanetUploadImageResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -45,16 +45,6 @@ interface PlanetServiceAsync {
         params: PlanetCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Planet>
-
-    /** @see create */
-    fun create(
-        planet: Planet,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Planet> =
-        create(PlanetCreateParams.builder().planet(planet).build(), requestOptions)
-
-    /** @see create */
-    fun create(planet: Planet): CompletableFuture<Planet> = create(planet, RequestOptions.none())
 
     /**
      * You'll better learn a little bit more about the planets. It might come in handy once space
@@ -114,6 +104,27 @@ interface PlanetServiceAsync {
     ): CompletableFuture<Planet>
 
     /**
+     * It's easy to say you know them all, but do you really? Retrieve all the planets and check
+     * whether you missed one.
+     */
+    fun list(): CompletableFuture<PlanetListResponse> = list(PlanetListParams.none())
+
+    /** @see list */
+    fun list(
+        params: PlanetListParams = PlanetListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<PlanetListResponse>
+
+    /** @see list */
+    fun list(
+        params: PlanetListParams = PlanetListParams.none(),
+    ): CompletableFuture<PlanetListResponse> = list(params, RequestOptions.none())
+
+    /** @see list */
+    fun list(requestOptions: RequestOptions): CompletableFuture<PlanetListResponse> =
+        list(PlanetListParams.none(), requestOptions)
+
+    /**
      * This endpoint was used to delete planets. Unfortunately, that caused a lot of trouble for
      * planets with life. So, this endpoint is now deprecated and should not be used anymore.
      */
@@ -149,62 +160,40 @@ interface PlanetServiceAsync {
         delete(planetId, PlanetDeleteParams.none(), requestOptions)
 
     /** Got a crazy good photo of a planet? Share it with the world! */
-    fun delteImage(planetId: Long): CompletableFuture<PlanetDelteImageResponse> =
-        delteImage(planetId, PlanetDelteImageParams.none())
+    fun uploadImage(planetId: Long): CompletableFuture<PlanetUploadImageResponse> =
+        uploadImage(planetId, PlanetUploadImageParams.none())
 
-    /** @see delteImage */
-    fun delteImage(
+    /** @see uploadImage */
+    fun uploadImage(
         planetId: Long,
-        params: PlanetDelteImageParams = PlanetDelteImageParams.none(),
+        params: PlanetUploadImageParams = PlanetUploadImageParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<PlanetDelteImageResponse> =
-        delteImage(params.toBuilder().planetId(planetId).build(), requestOptions)
+    ): CompletableFuture<PlanetUploadImageResponse> =
+        uploadImage(params.toBuilder().planetId(planetId).build(), requestOptions)
 
-    /** @see delteImage */
-    fun delteImage(
+    /** @see uploadImage */
+    fun uploadImage(
         planetId: Long,
-        params: PlanetDelteImageParams = PlanetDelteImageParams.none(),
-    ): CompletableFuture<PlanetDelteImageResponse> =
-        delteImage(planetId, params, RequestOptions.none())
+        params: PlanetUploadImageParams = PlanetUploadImageParams.none(),
+    ): CompletableFuture<PlanetUploadImageResponse> =
+        uploadImage(planetId, params, RequestOptions.none())
 
-    /** @see delteImage */
-    fun delteImage(
-        params: PlanetDelteImageParams,
+    /** @see uploadImage */
+    fun uploadImage(
+        params: PlanetUploadImageParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<PlanetDelteImageResponse>
+    ): CompletableFuture<PlanetUploadImageResponse>
 
-    /** @see delteImage */
-    fun delteImage(params: PlanetDelteImageParams): CompletableFuture<PlanetDelteImageResponse> =
-        delteImage(params, RequestOptions.none())
+    /** @see uploadImage */
+    fun uploadImage(params: PlanetUploadImageParams): CompletableFuture<PlanetUploadImageResponse> =
+        uploadImage(params, RequestOptions.none())
 
-    /** @see delteImage */
-    fun delteImage(
+    /** @see uploadImage */
+    fun uploadImage(
         planetId: Long,
         requestOptions: RequestOptions,
-    ): CompletableFuture<PlanetDelteImageResponse> =
-        delteImage(planetId, PlanetDelteImageParams.none(), requestOptions)
-
-    /**
-     * It's easy to say you know them all, but do you really? Retrieve all the planets and check
-     * whether you missed one.
-     */
-    fun listAllData(): CompletableFuture<PlanetListAllDataResponse> =
-        listAllData(PlanetListAllDataParams.none())
-
-    /** @see listAllData */
-    fun listAllData(
-        params: PlanetListAllDataParams = PlanetListAllDataParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<PlanetListAllDataResponse>
-
-    /** @see listAllData */
-    fun listAllData(
-        params: PlanetListAllDataParams = PlanetListAllDataParams.none()
-    ): CompletableFuture<PlanetListAllDataResponse> = listAllData(params, RequestOptions.none())
-
-    /** @see listAllData */
-    fun listAllData(requestOptions: RequestOptions): CompletableFuture<PlanetListAllDataResponse> =
-        listAllData(PlanetListAllDataParams.none(), requestOptions)
+    ): CompletableFuture<PlanetUploadImageResponse> =
+        uploadImage(planetId, PlanetUploadImageParams.none(), requestOptions)
 
     /**
      * A view of [PlanetServiceAsync] that provides access to raw HTTP responses for each method.
@@ -217,7 +206,7 @@ interface PlanetServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): PlanetServiceAsync.WithRawResponse
 
         /**
@@ -232,17 +221,6 @@ interface PlanetServiceAsync {
             params: PlanetCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Planet>>
-
-        /** @see create */
-        fun create(
-            planet: Planet,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Planet>> =
-            create(PlanetCreateParams.builder().planet(planet).build(), requestOptions)
-
-        /** @see create */
-        fun create(planet: Planet): CompletableFuture<HttpResponseFor<Planet>> =
-            create(planet, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `get /planets/{planetId}`, but is otherwise the same as
@@ -312,6 +290,31 @@ interface PlanetServiceAsync {
         ): CompletableFuture<HttpResponseFor<Planet>>
 
         /**
+         * Returns a raw HTTP response for `get /planets`, but is otherwise the same as
+         * [PlanetServiceAsync.list].
+         */
+        fun list(): CompletableFuture<HttpResponseFor<PlanetListResponse>> =
+            list(PlanetListParams.none())
+
+        /** @see list */
+        fun list(
+            params: PlanetListParams = PlanetListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<PlanetListResponse>>
+
+        /** @see list */
+        fun list(
+            params: PlanetListParams = PlanetListParams.none(),
+        ): CompletableFuture<HttpResponseFor<PlanetListResponse>> =
+            list(params, RequestOptions.none())
+
+        /** @see list */
+        fun list(
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<PlanetListResponse>> =
+            list(PlanetListParams.none(), requestOptions)
+
+        /**
          * Returns a raw HTTP response for `delete /planets/{planetId}`, but is otherwise the same
          * as [PlanetServiceAsync.delete].
          */
@@ -351,70 +354,45 @@ interface PlanetServiceAsync {
 
         /**
          * Returns a raw HTTP response for `post /planets/{planetId}/image`, but is otherwise the
-         * same as [PlanetServiceAsync.delteImage].
+         * same as [PlanetServiceAsync.uploadImage].
          */
-        fun delteImage(
-            planetId: Long
-        ): CompletableFuture<HttpResponseFor<PlanetDelteImageResponse>> =
-            delteImage(planetId, PlanetDelteImageParams.none())
-
-        /** @see delteImage */
-        fun delteImage(
+        fun uploadImage(
             planetId: Long,
-            params: PlanetDelteImageParams = PlanetDelteImageParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<PlanetDelteImageResponse>> =
-            delteImage(params.toBuilder().planetId(planetId).build(), requestOptions)
+        ): CompletableFuture<HttpResponseFor<PlanetUploadImageResponse>> =
+            uploadImage(planetId, PlanetUploadImageParams.none())
 
-        /** @see delteImage */
-        fun delteImage(
+        /** @see uploadImage */
+        fun uploadImage(
             planetId: Long,
-            params: PlanetDelteImageParams = PlanetDelteImageParams.none(),
-        ): CompletableFuture<HttpResponseFor<PlanetDelteImageResponse>> =
-            delteImage(planetId, params, RequestOptions.none())
-
-        /** @see delteImage */
-        fun delteImage(
-            params: PlanetDelteImageParams,
+            params: PlanetUploadImageParams = PlanetUploadImageParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<PlanetDelteImageResponse>>
+        ): CompletableFuture<HttpResponseFor<PlanetUploadImageResponse>> =
+            uploadImage(params.toBuilder().planetId(planetId).build(), requestOptions)
 
-        /** @see delteImage */
-        fun delteImage(
-            params: PlanetDelteImageParams
-        ): CompletableFuture<HttpResponseFor<PlanetDelteImageResponse>> =
-            delteImage(params, RequestOptions.none())
+        /** @see uploadImage */
+        fun uploadImage(
+            planetId: Long,
+            params: PlanetUploadImageParams = PlanetUploadImageParams.none(),
+        ): CompletableFuture<HttpResponseFor<PlanetUploadImageResponse>> =
+            uploadImage(planetId, params, RequestOptions.none())
 
-        /** @see delteImage */
-        fun delteImage(
+        /** @see uploadImage */
+        fun uploadImage(
+            params: PlanetUploadImageParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<PlanetUploadImageResponse>>
+
+        /** @see uploadImage */
+        fun uploadImage(
+            params: PlanetUploadImageParams,
+        ): CompletableFuture<HttpResponseFor<PlanetUploadImageResponse>> =
+            uploadImage(params, RequestOptions.none())
+
+        /** @see uploadImage */
+        fun uploadImage(
             planetId: Long,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<PlanetDelteImageResponse>> =
-            delteImage(planetId, PlanetDelteImageParams.none(), requestOptions)
-
-        /**
-         * Returns a raw HTTP response for `get /planets`, but is otherwise the same as
-         * [PlanetServiceAsync.listAllData].
-         */
-        fun listAllData(): CompletableFuture<HttpResponseFor<PlanetListAllDataResponse>> =
-            listAllData(PlanetListAllDataParams.none())
-
-        /** @see listAllData */
-        fun listAllData(
-            params: PlanetListAllDataParams = PlanetListAllDataParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<PlanetListAllDataResponse>>
-
-        /** @see listAllData */
-        fun listAllData(
-            params: PlanetListAllDataParams = PlanetListAllDataParams.none()
-        ): CompletableFuture<HttpResponseFor<PlanetListAllDataResponse>> =
-            listAllData(params, RequestOptions.none())
-
-        /** @see listAllData */
-        fun listAllData(
-            requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<PlanetListAllDataResponse>> =
-            listAllData(PlanetListAllDataParams.none(), requestOptions)
+        ): CompletableFuture<HttpResponseFor<PlanetUploadImageResponse>> =
+            uploadImage(planetId, PlanetUploadImageParams.none(), requestOptions)
     }
 }

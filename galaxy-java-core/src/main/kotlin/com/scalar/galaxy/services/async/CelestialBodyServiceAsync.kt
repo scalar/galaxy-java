@@ -7,7 +7,8 @@ import com.scalar.galaxy.core.RequestOptions
 import com.scalar.galaxy.core.http.HttpResponseFor
 import com.scalar.galaxy.models.celestialbodies.CelestialBody
 import com.scalar.galaxy.models.celestialbodies.CelestialBodyCreateParams
-import com.scalar.galaxy.models.planets.Planet
+import com.scalar.galaxy.models.celestialbodies.CelestialBodyParam
+import com.scalar.galaxy.models.planets.PlanetParam
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -41,7 +42,7 @@ interface CelestialBodyServiceAsync {
 
     /** @see create */
     fun create(
-        celestialBody: CelestialBody,
+        celestialBody: CelestialBodyParam,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CelestialBody> =
         create(
@@ -50,28 +51,29 @@ interface CelestialBodyServiceAsync {
         )
 
     /** @see create */
-    fun create(celestialBody: CelestialBody): CompletableFuture<CelestialBody> =
+    fun create(celestialBody: CelestialBodyParam): CompletableFuture<CelestialBody> =
         create(celestialBody, RequestOptions.none())
 
     /** @see create */
     fun create(
-        planet: Planet,
+        planet: PlanetParam,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<CelestialBody> = create(CelestialBody.ofPlanet(planet), requestOptions)
+    ): CompletableFuture<CelestialBody> =
+        create(CelestialBodyParam.ofPlanet(planet), requestOptions)
 
     /** @see create */
-    fun create(planet: Planet): CompletableFuture<CelestialBody> =
+    fun create(planet: PlanetParam): CompletableFuture<CelestialBody> =
         create(planet, RequestOptions.none())
 
     /** @see create */
     fun create(
-        satellite: CelestialBody.Satellite,
+        satellite: CelestialBodyParam.Satellite,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CelestialBody> =
-        create(CelestialBody.ofSatellite(satellite), requestOptions)
+        create(CelestialBodyParam.ofSatellite(satellite), requestOptions)
 
     /** @see create */
-    fun create(satellite: CelestialBody.Satellite): CompletableFuture<CelestialBody> =
+    fun create(satellite: CelestialBodyParam.Satellite): CompletableFuture<CelestialBody> =
         create(satellite, RequestOptions.none())
 
     /**
@@ -86,7 +88,7 @@ interface CelestialBodyServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): CelestialBodyServiceAsync.WithRawResponse
 
         /**
@@ -94,7 +96,7 @@ interface CelestialBodyServiceAsync {
          * [CelestialBodyServiceAsync.create].
          */
         fun create(
-            params: CelestialBodyCreateParams
+            params: CelestialBodyCreateParams,
         ): CompletableFuture<HttpResponseFor<CelestialBody>> = create(params, RequestOptions.none())
 
         /** @see create */
@@ -105,7 +107,7 @@ interface CelestialBodyServiceAsync {
 
         /** @see create */
         fun create(
-            celestialBody: CelestialBody,
+            celestialBody: CelestialBodyParam,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CelestialBody>> =
             create(
@@ -115,31 +117,31 @@ interface CelestialBodyServiceAsync {
 
         /** @see create */
         fun create(
-            celestialBody: CelestialBody
+            celestialBody: CelestialBodyParam,
         ): CompletableFuture<HttpResponseFor<CelestialBody>> =
             create(celestialBody, RequestOptions.none())
 
         /** @see create */
         fun create(
-            planet: Planet,
+            planet: PlanetParam,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CelestialBody>> =
-            create(CelestialBody.ofPlanet(planet), requestOptions)
+            create(CelestialBodyParam.ofPlanet(planet), requestOptions)
 
         /** @see create */
-        fun create(planet: Planet): CompletableFuture<HttpResponseFor<CelestialBody>> =
+        fun create(planet: PlanetParam): CompletableFuture<HttpResponseFor<CelestialBody>> =
             create(planet, RequestOptions.none())
 
         /** @see create */
         fun create(
-            satellite: CelestialBody.Satellite,
+            satellite: CelestialBodyParam.Satellite,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CelestialBody>> =
-            create(CelestialBody.ofSatellite(satellite), requestOptions)
+            create(CelestialBodyParam.ofSatellite(satellite), requestOptions)
 
         /** @see create */
         fun create(
-            satellite: CelestialBody.Satellite
+            satellite: CelestialBodyParam.Satellite,
         ): CompletableFuture<HttpResponseFor<CelestialBody>> =
             create(satellite, RequestOptions.none())
     }

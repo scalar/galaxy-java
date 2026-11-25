@@ -24,8 +24,9 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 ```
 
 ## `Planets`
@@ -38,20 +39,24 @@ It's easy to say you know them all, but do you really? Retrieve all the planets 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`PlanetListAllDataParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListAllDataParams.kt) |
-| Response | [`PlanetListAllDataResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListAllDataResponse.kt) |
+| Request | [`PlanetListParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListParams.kt) |
+| Response | [`PlanetListResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetListResponse.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.models.planets.PlanetListParams;
+import com.scalar.galaxy.models.planets.PlanetListResponse;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetListAllDataParams params =
-    PlanetListAllDataParams.builder().limit(10L).offset(0L).build();
-var planet = client.planets().listAllData(params);
+PlanetListParams params = PlanetListParams.builder()
+    .limit(10L)
+    .offset(0L)
+    .build();
+PlanetListResponse planet = client.planets().list(params);
 
 System.out.println(planet);
 ```
@@ -68,15 +73,17 @@ Time to play god and create a new planet. What do you think? Ah, don't think too
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.galaxy.models.planets.Planet;
 import com.scalar.galaxy.models.planets.PlanetCreateParams;
+import com.scalar.galaxy.models.planets.Planet;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetCreateParams params =
-    PlanetCreateParams.builder().planet(Planet.builder().name("Mars").build()).build();
-var planet = client.planets().create(params);
+PlanetCreateParams params = PlanetCreateParams.builder()
+    .name("Mars")
+    .build();
+Planet planet = client.planets().create(params);
 
 System.out.println(planet);
 ```
@@ -94,12 +101,16 @@ You'll better learn a little bit more about the planets. It might come in handy 
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import com.scalar.galaxy.models.planets.PlanetRetrieveParams;
+import com.scalar.galaxy.models.planets.Planet;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetRetrieveParams params = PlanetRetrieveParams.builder().planetId(1L).build();
-var planet = client.planets().retrieve(params);
+PlanetRetrieveParams params = PlanetRetrieveParams.builder()
+    .planetId(1L)
+    .build();
+Planet planet = client.planets().retrieve(params);
 
 System.out.println(planet);
 ```
@@ -116,18 +127,18 @@ Sometimes you make mistakes, that's fine. No worries, you can update all planets
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.galaxy.models.planets.Planet;
 import com.scalar.galaxy.models.planets.PlanetUpdateParams;
+import com.scalar.galaxy.models.planets.Planet;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetUpdateParams params =
-    PlanetUpdateParams.builder()
-        .planetId(1L)
-        .planet(Planet.builder().name("Mars").build())
-        .build();
-var planet = client.planets().update(params);
+PlanetUpdateParams params = PlanetUpdateParams.builder()
+    .planetId(1L)
+    .name("Mars")
+    .build();
+Planet planet = client.planets().update(params);
 
 System.out.println(planet);
 ```
@@ -145,10 +156,13 @@ import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import com.scalar.galaxy.models.planets.PlanetDeleteParams;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetDeleteParams params = PlanetDeleteParams.builder().planetId(1L).build();
+PlanetDeleteParams params = PlanetDeleteParams.builder()
+    .planetId(1L)
+    .build();
 client.planets().delete(params);
 ```
 
@@ -158,19 +172,23 @@ Got a crazy good photo of a planet? Share it with the world!
 
 | Direction | Type |
 | --- | --- |
-| Request | [`PlanetDelteImageParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetDelteImageParams.kt) |
-| Response | [`PlanetDelteImageResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetDelteImageResponse.kt) |
+| Request | [`PlanetUploadImageParams`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetUploadImageParams.kt) |
+| Response | [`PlanetUploadImageResponse`](./galaxy-java-core/src/main/kotlin/com/scalar/galaxy/models/planets/PlanetUploadImageResponse.kt) |
 
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.galaxy.models.planets.PlanetDelteImageParams;
+import com.scalar.galaxy.models.planets.PlanetUploadImageParams;
+import com.scalar.galaxy.models.planets.PlanetUploadImageResponse;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetDelteImageParams params = PlanetDelteImageParams.builder().planetId(1L).build();
-var planet = client.planets().delteImage(params);
+PlanetUploadImageParams params = PlanetUploadImageParams.builder()
+    .planetId(1L)
+    .build();
+PlanetUploadImageResponse planet = client.planets().uploadImage(params);
 
 System.out.println(planet);
 ```
@@ -191,18 +209,21 @@ Stars, moons, comets, the occasional rogue asteroid — if it glows or drifts th
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.galaxy.models.celestialbodies.CelestialBody;
 import com.scalar.galaxy.models.celestialbodies.CelestialBodyCreateParams;
-import com.scalar.galaxy.models.planets.Planet;
+import com.scalar.galaxy.models.celestialbodies.CelestialBodyParam;
+import com.scalar.galaxy.models.planets.PlanetParam;
+import com.scalar.galaxy.models.celestialbodies.CelestialBody;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-CelestialBodyCreateParams params =
-    CelestialBodyCreateParams.builder()
-        .celestialBody(CelestialBody.ofPlanet(Planet.builder().name("Mars").build()))
-        .build();
-var celestialBody = client.celestialBodies().create(params);
+CelestialBodyCreateParams params = CelestialBodyCreateParams.builder()
+    .celestialBody(CelestialBodyParam.ofPlanet(PlanetParam.builder()
+    .name("Mars")
+    .build()))
+    .build();
+CelestialBody celestialBody = client.celestialBodies().create(params);
 
 System.out.println(celestialBody);
 ```
@@ -224,17 +245,18 @@ Time to create a user account, eh?
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import com.scalar.galaxy.models.authentication.AuthenticationCreateUserParams;
+import com.scalar.galaxy.models.authentication.User;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-AuthenticationCreateUserParams params =
-    AuthenticationCreateUserParams.builder()
-        .name("Marc")
-        .email("marc@scalar.com")
-        .password("i-love-scalar")
-        .build();
-var authentication = client.authentication().createUser(params);
+AuthenticationCreateUserParams params = AuthenticationCreateUserParams.builder()
+    .name("Marc")
+    .email("marc@scalar.com")
+    .password("i-love-scalar")
+    .build();
+User authentication = client.authentication().createUser(params);
 
 System.out.println(authentication);
 ```
@@ -252,17 +274,17 @@ Yeah, this is the boring security stuff. Just get your super secret token and mo
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import com.scalar.galaxy.models.authentication.AuthenticationCreateTokenParams;
-import com.scalar.galaxy.models.authentication.Credentials;
+import com.scalar.galaxy.models.authentication.AuthenticationCreateTokenResponse;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-AuthenticationCreateTokenParams params =
-    AuthenticationCreateTokenParams.builder()
-        .credentials(
-            Credentials.builder().email("marc@scalar.com").password("i-love-scalar").build())
-        .build();
-var authentication = client.authentication().createToken(params);
+AuthenticationCreateTokenParams params = AuthenticationCreateTokenParams.builder()
+    .email("marc@scalar.com")
+    .password("i-love-scalar")
+    .build();
+AuthenticationCreateTokenResponse authentication = client.authentication().createToken(params);
 
 System.out.println(authentication);
 ```
@@ -279,11 +301,14 @@ Find yourself they say. That's what you can do here.
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
+import com.scalar.galaxy.models.authentication.AuthenticationListMeParams;
+import com.scalar.galaxy.models.authentication.User;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-var authentication = client.authentication().listMe();
+User authentication = client.authentication().listMe();
 
 System.out.println(authentication);
 ```

@@ -24,6 +24,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Client Options](#client-options)
 - [Request Options](#request-options)
 - [Retries and Timeouts](#retries-and-timeouts)
+- [Webhooks](#webhooks)
 - [Helpers](#helpers)
 - [Logging](#logging)
 - [Requirements](#requirements)
@@ -37,7 +38,7 @@ The full API of this library can be found in [api.md](./api.md).
 Add the dependency to your Gradle build:
 
 ```kotlin
-implementation("com.scalar.galaxy:galaxy-java:0.2.0") // x-release-please-version
+implementation("com.scalar.galaxy:galaxy-java:0.3.0") // x-release-please-version
 ```
 
 Or declare it in your Maven `pom.xml`:
@@ -46,7 +47,7 @@ Or declare it in your Maven `pom.xml`:
 <dependency>
   <groupId>com.scalar.galaxy</groupId>
   <artifactId>galaxy-java</artifactId>
-  <version>0.2.0</version> <!-- x-release-please-version -->
+  <version>0.3.0</version> <!-- x-release-please-version -->
 </dependency>
 ```
 
@@ -63,14 +64,18 @@ Or build the SDK from source, with JDK 21 installed:
 ```java
 import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
-import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.models.planets.PlanetListParams;
+import com.scalar.galaxy.models.planets.PlanetListResponse;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetListAllDataParams params =
-    PlanetListAllDataParams.builder().limit(10L).offset(0L).build();
-var planet = client.planets().listAllData(params);
+PlanetListParams params = PlanetListParams.builder()
+    .limit(10L)
+    .offset(0L)
+    .build();
+PlanetListResponse planet = client.planets().list(params);
 
 System.out.println(planet);
 ```
@@ -88,14 +93,17 @@ Use `GalaxyOkHttpClientAsync.builder()` or call `client.async()` when you want `
 ```java
 import com.scalar.galaxy.client.GalaxyClientAsync;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClientAsync;
-import com.scalar.galaxy.models.planets.PlanetListAllDataParams;
+import com.scalar.galaxy.models.planets.PlanetListParams;
 
-GalaxyClientAsync client =
-    GalaxyOkHttpClientAsync.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+GalaxyClientAsync client = GalaxyOkHttpClientAsync.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
-PlanetListAllDataParams params =
-    PlanetListAllDataParams.builder().limit(10L).offset(0L).build();
-client.planets().listAllData(params).thenAccept(planet -> System.out.println(planet));
+PlanetListParams params = PlanetListParams.builder()
+    .limit(10L)
+    .offset(0L)
+    .build();
+client.planets().list(params).thenAccept(planet -> System.out.println(planet));
 ```
 
 <br />
@@ -157,7 +165,9 @@ Beyond the timeout and retry settings documented under Retries and Timeouts,
   shuts it down when closed.
 
 To replace the transport entirely, implement `HttpClient` and pass it to `ClientOptions.builder().httpClient(…)`;
-the generated OkHttp builders are one implementation of that interface, not a requirement.
+the generated OkHttp builders are one implementation of that interface, not a requirement. **Your client must
+not follow redirects itself:** the SDK follows them, and drops every credential header when one leaves the
+API's origin, which it cannot do for a hop your client has already taken.
 
 <br />
 
@@ -169,9 +179,13 @@ The SDK deserializes with reflection, so shrinkers need to be told which members
 from the artifact automatically. Copy them into your own configuration only if your build does not read
 rules published by dependencies.
 
-Note that those rules keep the whole generated SDK package, so a minified build does not shrink or obfuscate
-the generated classes. That is deliberate: a narrower rule set drops the annotations the SDK uses to omit unset
-properties, and a shrunk build then fails at runtime on the first optional property a caller leaves out.
+The rules keep what Jackson reaches through reflection: the constructors and annotated members it binds, the
+annotation the SDK uses to omit unset properties, and the Kotlin metadata that tells it which constructor
+parameters have defaults. Every class with a custom serializer or deserializer — each union type and the core
+`JsonField` and `JsonValue` types — is kept whole and under its own name, which also keeps every model its
+members refer to. The SDK's enums keep the lookups `Enum.valueOf` makes by reflection, and the two client
+implementations keep their names, which each client sends in its `User-Agent` header. Other generated classes
+can still be shrunk and obfuscated, so a minified build drops the ones it never reaches and renames the rest.
 
 The `galaxy-java-proguard-test` module checks those rules hold: `./gradlew testProGuard testR8` shrinks the SDK
 with each shrinker under exactly the published rules and runs the compatibility test out of the shrunk jar.
@@ -249,15 +263,19 @@ Declared schemes:
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```java
+import com.scalar.galaxy.models.planets.PlanetListParams;
+import com.scalar.galaxy.models.planets.PlanetListResponse;
 import com.scalar.galaxy.errors.GalaxyServiceException;
 
 try {
-  PlanetListAllDataParams params =
-      PlanetListAllDataParams.builder().limit(10L).offset(0L).build();
-  var planet = client.planets().listAllData(params);
+    PlanetListParams params = PlanetListParams.builder()
+        .limit(10L)
+        .offset(0L)
+        .build();
+    PlanetListResponse planet = client.planets().list(params);
 } catch (GalaxyServiceException err) {
-  System.out.println(err.statusCode() + " " + err.body());
-  throw err;
+    System.out.println(err.statusCode() + " " + err.body());
+    throw err;
 }
 ```
 
@@ -274,12 +292,12 @@ import com.scalar.galaxy.client.GalaxyClient;
 import com.scalar.galaxy.client.okhttp.GalaxyOkHttpClient;
 import java.time.Duration;
 
-GalaxyClient client =
-    GalaxyOkHttpClient.builder()
-        .baseUrl("https://galaxy.scalar.com")
-        .timeout(Duration.ofSeconds(60))
-        .maxRetries(2)
-        .build();
+GalaxyClient client = GalaxyOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .baseUrl("https://galaxy.scalar.com")
+    .timeout(Duration.ofSeconds(60))
+    .maxRetries(2)
+    .build();
 ```
 
 | Option | Type | Default | Description |
@@ -318,6 +336,29 @@ GalaxyClient client =
 ## Retries and Timeouts
 
 Generated clients support request timeouts and retry temporary failures such as network errors, 408, 409, 429, and 5xx responses. Retry delays honor `Retry-After` headers when present. Tune the retry and timeout client options shown above, or override them per request.
+
+<br />
+
+## Webhooks
+
+The webhook helper verifies the signature of each delivery your server receives, then decodes its body into a typed event. Pass it the request body exactly as it arrived, before any JSON parsing, together with the request headers: the signature covers the raw body, so one that was parsed and re-serialized fails verification. A delivery whose signature does not verify is rejected before it is decoded.
+
+```java
+import com.scalar.galaxy.core.http.Headers;
+import com.scalar.galaxy.models.webhooks.UnwrapWebhookEvent;
+
+// `body` is the raw request body; `requestHeaders` maps each request header to its values.
+// `secret` is your signing secret: the webhook helper reads none from the client.
+Headers headers = Headers.builder().putAll(requestHeaders).build();
+UnwrapWebhookEvent event = client.webhooks().unwrap(body, headers, secret);
+```
+
+The webhook helper reads no secret from the client, so pass it as `secret` on every call.
+
+The same resource also has:
+
+- `client.webhooks().verifySignature(body, headers, secret)` checks a delivery's signature, and fails when it does not verify.
+- `client.webhooks().parseUnsafe(body)` decodes a body into a typed event without checking its signature. Use it only for a body verified elsewhere, or in tests.
 
 <br />
 
